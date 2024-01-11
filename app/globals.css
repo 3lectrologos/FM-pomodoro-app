@@ -2,26 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.text-h1 {
+  @apply text-[80px] font-bold leading-[123%] tracking-[-4px] tablet:text-[100px] tablet:leading-[120px] tablet:tracking-[-5px];
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.text-h2 {
+  @apply text-[20px] font-bold leading-[123%] tablet:text-[28px] tablet:leading-[34px];
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.text-h3 {
+  @apply text-[14px] font-bold uppercase tracking-[13.125px] leading-[123%] tablet:text-[16px] tablet:leading-[19px] tablet:tracking-[15px];
+}
+
+.text-h4 {
+  @apply text-[11px] font-bold uppercase tracking-[4.321px] leading-[123%] tablet:text-[13px] tablet:leading-[16px] tablet:tracking-[5px];
+}
+
+.text-body1 {
+  @apply font-bold text-[12px] leading-[123%] tablet:text-[14px] tablet:leading-[18px];
+}
+
+.text-body2 {
+  @apply font-bold text-[12px] leading-[123%] tablet:text-[12px] tablet:leading-[14px];
+}
+
+.text-button {
+  @apply font-bold text-[16px] leading-[123%];
+}
+
+.text-form-small {
+  @apply font-bold text-[12px] leading-[123%];
+}
+
+.text-form-medium {
+  @apply font-bold text-[14px] leading-[123%];
+}
+
+.text-selection {
+  @apply font-bold text-[15px] leading-[123%];
 }
