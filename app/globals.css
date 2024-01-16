@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .text-h1 {
-  @apply text-[80px] font-bold leading-[123%] tracking-[0px] tablet:text-[100px] tablet:leading-[120px] tablet:tracking-[-5px];
+  @apply text-[80px] font-normal leading-[123%] tracking-[-8px] ml-[-8px] tablet:text-[100px] tablet:leading-[120px] tablet:tracking-[-10px] tablet:ml-[-10px];
 }
 
 .text-h2 {
@@ -11,7 +11,7 @@
 }
 
 .text-h3 {
-  @apply text-[14px] font-bold uppercase tracking-[13.125px] pl-[13.125px] leading-[123%] tablet:text-[16px] tablet:leading-[19px] tablet:tracking-[15px] tablet:pl-[15px];
+  @apply text-[14px] font-bold uppercase tracking-[13px] ml-[13px] leading-[123%] tablet:text-[16px] tablet:leading-[19px] tablet:tracking-[15px] tablet:ml-[15px];
 }
 
 .text-h4 {

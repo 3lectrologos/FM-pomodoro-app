@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
-import { Kumbh_Sans } from 'next/font/google'
+import { Space_Mono } from 'next/font/google'
 import './globals.css'
 
-const kumbhSans = Kumbh_Sans({ subsets: ['latin'] })
+const spaceMono = Space_Mono({ weight: "400", subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={kumbhSans.className}>{children}</body>
+      <body className={spaceMono.className}>{children}</body>
     </html>
   )
 }

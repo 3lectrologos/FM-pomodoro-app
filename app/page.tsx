@@ -2,6 +2,7 @@
 
 import { twJoin, twMerge } from 'tailwind-merge'
 import { useState } from 'react'
+import useCountdown from '@/app/useCountdown'
 
 enum MenuItem {
   Pomodoro,
@@ -56,15 +57,22 @@ function Menu({ active, onClick, className='' }: { active: MenuItem, onClick: (_
   )
 }
 
-function Timer({ className='' }: { className?: string }) {
+function Timer({ seconds, totalSeconds, className='' }: { seconds: number, totalSeconds: number, className?: string }) {
+  const roundedSeconds = Math.ceil(seconds)
+  const min = String(Math.floor(roundedSeconds / 60)).padStart(2, '0')
+  const sec = String(roundedSeconds % 60).padStart(2, '0')
+
   return (
     <div className={twMerge(
-      `flex flex-col shrink-0 w-[300px] h-[300px] rounded-full bg-oval shadow-oval items-center justify-center`,
+      `relative flex flex-col shrink-0 w-[300px] h-[300px] rounded-full bg-oval shadow-oval items-center justify-center`,
       `${className}`,
     )}>
+      <div className={`absolute top-1/2 transform -translate-y-1/2 w-[248px] h-[248px]`}>
+        <ProgressBar percentage={seconds / totalSeconds} strokeWidth={6.5} />
+      </div>
       <div className={`flex flex-col shrink-0 w-[267.7px] h-[267.7px] rounded-full bg-offblack items-center justify-center`}>
         <div className={`relative text-h1 text-lightblue`}>
-          17:59
+          {min}:{sec}
           <div className={`absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-h3 text-lightblue`}>
             pause
           </div>
@@ -74,18 +82,56 @@ function Timer({ className='' }: { className?: string }) {
   )
 }
 
+function ProgressBar({ className='', percentage, strokeWidth=6 }: { className?: string, percentage: number, strokeWidth?:number }) {
+  if (percentage === 1) {
+    percentage = 0.99999
+  }
+  const angle = percentage * 2 * Math.PI
+
+  const largeAngleFlag = (angle > Math.PI) ? 1 : 0
+  const sweepFlag = (angle > 0) ? 1 : 0
+  const radius = 100
+
+  function dot([[a, b], [c, d]]: number[][], [x, y]: number[]) {
+    return [a * x + b * y, c * x + d * y]
+  }
+
+  function rotationMatrix(angle: number) {
+    const cos = Math.cos(angle)
+    const sin = Math.sin(angle)
+    return [[cos, -sin], [sin, cos]]
+  }
+
+  function addVectors([ax, ay]: number[], [bx, by]: number[]) {
+    return [ax + bx, ay + by]
+  }
+
+  const rotation = rotationMatrix(angle)
+  const [x, y] = addVectors(
+    dot(rotation, [0, -radius]), [radius, radius])
+
+  return (
+    angle !== 0 &&
+    <svg
+      viewBox={`${-0.5 * strokeWidth} ${-0.5 * strokeWidth} ${2 * radius + strokeWidth} ${2 * radius + strokeWidth}`}>
+      <path fill="none" stroke="#F87070" strokeWidth={strokeWidth} strokeLinecap="round" strokeMiterlimit="10"
+            d={`M ${radius} 0 A ${radius} ${radius} 270 ${largeAngleFlag} ${sweepFlag} ${x} ${y}`}/>
+    </svg>
+  )
+}
+
 function OptionsButton({className = '', onClick}: { className?: string, onClick: () => void }) {
   return (
     <div className={twMerge(
       `flex w-[28px] h-[28px] items-center justify-center`,
-      `${className}`,
+      `${className}`
     )}
-         role='button'
-         aria-pressed='false'
+         role="button"
+         aria-pressed="false"
          tabIndex={0}
-          onClick={onClick}
+         onClick={onClick}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox='0 0 28 28'>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
         <path fill="#D7E0FF"
               d="M26.965 17.682l-2.927-2.317c.055-.448.097-.903.097-1.365 0-.462-.042-.917-.097-1.365l2.934-2.317a.702.702 0 00.167-.896l-2.775-4.851a.683.683 0 00-.847-.301l-3.454 1.407a10.506 10.506 0 00-2.345-1.379l-.52-3.71A.716.716 0 0016.503 0h-5.55a.703.703 0 00-.687.588l-.52 3.71c-.847.357-1.63.819-2.345 1.379L3.947 4.27a.691.691 0 00-.847.301L.325 9.422a.705.705 0 00.167.896l2.927 2.317c-.055.448-.097.903-.097 1.365 0 .462.042.917.097 1.365L.492 17.682a.702.702 0 00-.167.896L3.1 23.429a.683.683 0 00.847.301L7.4 22.323a10.506 10.506 0 002.345 1.379l.52 3.71c.056.329.34.588.687.588h5.55a.703.703 0 00.687-.588l.52-3.71c.847-.357 1.631-.819 2.346-1.379l3.454 1.407c.313.119.673 0 .847-.301l2.775-4.851a.705.705 0 00-.167-.896zM13.73 18.9c-2.685 0-4.857-2.191-4.857-4.9 0-2.709 2.172-4.9 4.857-4.9 2.684 0 4.856 2.191 4.856 4.9 0 2.71-2.172 4.9-4.856 4.9z"
               opacity=".5" />
@@ -96,6 +142,8 @@ function OptionsButton({className = '', onClick}: { className?: string, onClick:
 
 export default function Home() {
   const [menuActive, setMenuActive] = useState(MenuItem.Pomodoro)
+  const startSeconds = 60
+  const seconds = useCountdown(startSeconds)
 
   return (
     <div className={twMerge(
@@ -109,7 +157,7 @@ export default function Home() {
         )}>
           <Logo className={`mb-[45px]`}/>
           <Menu onClick={(index: number) => setMenuActive(index)} active={menuActive} className={`mb-12`}/>
-          <Timer className={`mb-20`} />
+          <Timer seconds={seconds} totalSeconds={startSeconds} className={`mb-20`} />
           <OptionsButton onClick={() => {}} />
         </div>
       </div>
