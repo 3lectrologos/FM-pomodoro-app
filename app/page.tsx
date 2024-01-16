@@ -1,8 +1,7 @@
 'use client'
 
 import { twJoin, twMerge } from 'tailwind-merge'
-import { useState } from 'react'
-import useCountdown from '@/app/useCountdown'
+import { useEffect, useState } from 'react'
 
 enum MenuItem {
   Pomodoro,
@@ -57,10 +56,51 @@ function Menu({ active, onClick, className='' }: { active: MenuItem, onClick: (_
   )
 }
 
-function Timer({ seconds, totalSeconds, className='' }: { seconds: number, totalSeconds: number, className?: string }) {
-  const roundedSeconds = Math.ceil(seconds)
-  const min = String(Math.floor(roundedSeconds / 60)).padStart(2, '0')
-  const sec = String(roundedSeconds % 60).padStart(2, '0')
+function Timer({ durationSeconds, className='' }: { durationSeconds: number, className?: string }) {
+  const [startTime, setStartTime] = useState<number|null>(null)
+  const [remainingSeconds, setRemainingSeconds] = useState(durationSeconds)
+  const [currentDuration, setCurrentDuration] = useState(durationSeconds)
+
+  function isPaused() {
+    return startTime === null
+  }
+
+  function setPaused() {
+    setStartTime(null)
+  }
+
+  function isFinished() {
+    return remainingSeconds === 0
+  }
+
+  function onTimerClick() {
+    if (isFinished()) {
+      setCurrentDuration(durationSeconds)
+      setRemainingSeconds(durationSeconds)
+      setStartTime(Date.now())
+    } else if (isPaused()) {
+      setCurrentDuration(remainingSeconds)
+      setStartTime(Date.now())
+    } else {
+      setPaused()
+    }
+  }
+
+  useEffect(() => {
+    if (startTime !== null && remainingSeconds > 0) {
+      setTimeout(() => {
+        setRemainingSeconds(Math.max(0, currentDuration - (Date.now() - startTime) / 1000))
+      }, 50)
+    }
+  }, [currentDuration, remainingSeconds, startTime])
+
+  function getTimeString(seconds: number) {
+    console.log(seconds)
+    const roundedSeconds = Math.ceil(seconds)
+    const min = String(Math.floor(roundedSeconds / 60)).padStart(2, '0')
+    const sec = String(roundedSeconds % 60).padStart(2, '0')
+    return `${min}:${sec}`
+  }
 
   return (
     <div className={twMerge(
@@ -68,21 +108,36 @@ function Timer({ seconds, totalSeconds, className='' }: { seconds: number, total
       `${className}`,
     )}>
       <div className={`absolute top-1/2 transform -translate-y-1/2 w-[248px] h-[248px]`}>
-        <ProgressBar percentage={seconds / totalSeconds} strokeWidth={6.5} />
+        <ProgressBar percentage={remainingSeconds / durationSeconds} strokeWidth={6.5} />
       </div>
       <div className={`flex flex-col shrink-0 w-[267.7px] h-[267.7px] rounded-full bg-offblack items-center justify-center`}>
         <div className={`relative text-h1 text-lightblue`}>
-          {min}:{sec}
-          <div className={`absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-h3 text-lightblue`}>
-            pause
-          </div>
+          { getTimeString(remainingSeconds) }
+          { isFinished() && <StartStopButton onClick={onTimerClick} text='restart' /> }
+          { isPaused() && <StartStopButton onClick={onTimerClick} text='start' /> }
+          { !isFinished() && !isPaused() && <StartStopButton onClick={onTimerClick} text='pause' /> }
         </div>
       </div>
     </div>
   )
 }
 
-function ProgressBar({ className='', percentage, strokeWidth=6 }: { className?: string, percentage: number, strokeWidth?:number }) {
+function StartStopButton({ className='', onClick, text }: { className?: string, onClick: () => void, text: string }) {
+  return (
+    <button
+      className={`absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-h3 text-lightblue`}
+      onClick={onClick}
+    >
+      {text}
+    </button>
+  )
+}
+
+function ProgressBar({className = '', percentage, strokeWidth = 6}: {
+  className?: string,
+  percentage: number,
+  strokeWidth?: number
+}) {
   if (percentage === 1) {
     percentage = 0.99999
   }
@@ -142,8 +197,7 @@ function OptionsButton({className = '', onClick}: { className?: string, onClick:
 
 export default function Home() {
   const [menuActive, setMenuActive] = useState(MenuItem.Pomodoro)
-  const startSeconds = 60
-  const seconds = useCountdown(startSeconds)
+  const durationSeconds = 25 * 60
 
   return (
     <div className={twMerge(
@@ -157,7 +211,7 @@ export default function Home() {
         )}>
           <Logo className={`mb-[45px]`}/>
           <Menu onClick={(index: number) => setMenuActive(index)} active={menuActive} className={`mb-12`}/>
-          <Timer seconds={seconds} totalSeconds={startSeconds} className={`mb-20`} />
+          <Timer durationSeconds={durationSeconds} className={`mb-20`} />
           <OptionsButton onClick={() => {}} />
         </div>
       </div>
