@@ -15,7 +15,9 @@ const config: Config = {
       background: '#1E213F',
       white: '#FFFFFF',
       offwhite: '#EFF1FA',
-      offblack: '#161932'
+      offblack: '#161932',
+      lightgray: '#E3E1E1',
+      darkblur: 'rgba(10, 12, 28, 0.50)'
     },
     screens: {
       tablet: '640px',

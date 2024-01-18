@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .text-h1 {
-  @apply text-[80px] font-normal leading-[123%] tracking-[-8px] ml-[-8px] tablet:text-[100px] tablet:leading-[120px] tablet:tracking-[-10px] tablet:ml-[-10px];
+  @apply text-[80px] font-bold leading-[123%] tracking-[0px] ml-[0px] tablet:text-[100px] tablet:leading-[120px] tablet:tracking-[0px] tablet:ml-[0px];
 }
 
 .text-h2 {
@@ -11,11 +11,11 @@
 }
 
 .text-h3 {
-  @apply text-[14px] font-bold uppercase tracking-[13px] ml-[13px] leading-[123%] tablet:text-[16px] tablet:leading-[19px] tablet:tracking-[15px] tablet:ml-[15px];
+  @apply text-[14px] font-bold uppercase tracking-[13px] pl-[13px] leading-[123%] tablet:text-[16px] tablet:leading-[19px] tablet:tracking-[15px] tablet:ml-[15px];
 }
 
 .text-h4 {
-  @apply text-[11px] font-bold uppercase tracking-[4.321px] leading-[123%] tablet:text-[13px] tablet:leading-[16px] tablet:tracking-[5px];
+  @apply text-[11px] font-bold uppercase tracking-[4.321px] pl-[4.321px] leading-[123%] tablet:text-[13px] tablet:leading-[16px] tablet:tracking-[5px] tablet:pl-[5px];
 }
 
 .text-body1 {
@@ -38,6 +38,10 @@
   @apply font-bold text-[14px] leading-[123%];
 }
 
-.text-selection {
+.textstyle-selection {
   @apply font-bold text-[15px] leading-[123%];
+}
+
+.textstyle-button {
+  @apply font-bold text-[16px] leading-[123%];
 }
