@@ -1,7 +1,7 @@
 'use client'
 
 import { twJoin, twMerge } from 'tailwind-merge'
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 enum MenuItem {
   Pomodoro,
@@ -24,6 +24,7 @@ function Logo({ className='' }: { className?: string }) {
 }
 
 function Menu({ active, onClick, className='' }: { active: MenuItem, onClick: (_n: number) => void, className?: string }) {
+  const colorScheme = useContext(SettingsContext).colorScheme
   const menuItems = ['pomodoro', 'short break', 'long break']
 
   return (
@@ -36,7 +37,7 @@ function Menu({ active, onClick, className='' }: { active: MenuItem, onClick: (_
           <li key={index}
               className={twJoin(
                 `transition flex flex-col w-[105px] h-12 items-center justify-center rounded-full`,
-                `${(active === index) ? 'text-background bg-primary_red' : ''}`
+                `${(active === index) ? `text-background ${BgColor.get(colorScheme)}` : ''}`
               )}
               role='button'
               aria-pressed='false'
@@ -95,7 +96,6 @@ function Timer({ durationSeconds, className='' }: { durationSeconds: number, cla
   }, [currentDuration, remainingSeconds, startTime])
 
   function getTimeString(seconds: number) {
-    console.log(seconds)
     const roundedSeconds = Math.ceil(seconds)
     const min = String(Math.floor(roundedSeconds / 60)).padStart(2, '0')
     const sec = String(roundedSeconds % 60).padStart(2, '0')
@@ -138,6 +138,9 @@ function ProgressBar({className = '', percentage, strokeWidth = 6}: {
   percentage: number,
   strokeWidth?: number
 }) {
+  const colorScheme = useContext(SettingsContext).colorScheme
+  const hexColor = HexColor.get(colorScheme)
+
   if (percentage === 1) {
     percentage = 0.99999
   }
@@ -169,13 +172,13 @@ function ProgressBar({className = '', percentage, strokeWidth = 6}: {
     angle !== 0 &&
     <svg
       viewBox={`${-0.5 * strokeWidth} ${-0.5 * strokeWidth} ${2 * radius + strokeWidth} ${2 * radius + strokeWidth}`}>
-      <path fill="none" stroke="#F87070" strokeWidth={strokeWidth} strokeLinecap="round" strokeMiterlimit="10"
+      <path fill="none" stroke={hexColor} strokeWidth={strokeWidth} strokeLinecap="round" strokeMiterlimit="10"
             d={`M ${radius} 0 A ${radius} ${radius} 270 ${largeAngleFlag} ${sweepFlag} ${x} ${y}`}/>
     </svg>
   )
 }
 
-function OptionsButton({className = '', onClick}: { className?: string, onClick: () => void }) {
+function SettingsButton({className = '', onClick}: { className?: string, onClick: () => void }) {
   return (
     <div className={twMerge(
       `flex w-[28px] h-[28px] items-center justify-center`,
@@ -216,9 +219,12 @@ function CloseButton({className = '', onClick}: { className?: string, onClick: (
 }
 
 function ApplyButton({className = '', onClick}: { className?: string, onClick: () => void }) {
+  const colorScheme = useContext(SettingsContext).colorScheme
+
   return (
     <div className={twMerge(
-      `flex w-[140px] h-[52px] -mt-[26px] items-center justify-center bg-primary_red text-white textstyle-button rounded-[26.5px]`,
+      `flex w-[140px] h-[52px] -mt-[26px] items-center justify-center text-white textstyle-button rounded-[26.5px]`,
+      `${BgColor.get(colorScheme)}`,
       `${className}`
     )}
          role="button"
@@ -231,18 +237,36 @@ function ApplyButton({className = '', onClick}: { className?: string, onClick: (
   )
 }
 
-function SettingsDialog({className = '', onCloseClick}: { className?: string, onCloseClick: () => void }) {
+function SettingsDialog({className = '', onCloseClick, onApplyClick}: { className?: string, onCloseClick: () => void, onApplyClick: (_s: PomodoroSettings) => void }) {
+  const contextSettings = useContext(SettingsContext)
+  const [settings, setSettings] = useState<PomodoroSettings>(contextSettings)
+
+  function closeDialog() {
+    setSettings(contextSettings)
+    onCloseClick()
+  }
+
   return (
     <div className={twMerge(
       `absolute z-20 flex flex-col w-full h-full px-6 pt-[46px] bg-darkblur text-offblack`,
       `${className}`
     )}>
       <div className={`flex flex-col bg-white rounded-[15px]`}>
-        <SettingsTitle className={`mb-6`} onCloseClick={onCloseClick} />
+        <SettingsTitle
+          className={`mb-6`}
+          onCloseClick={closeDialog}
+        />
         <TimeSettings className={`mb-6`} />
         <FontSettings className={`mb-6`} />
-        <ColorSettings className={`mb-8`} />
-        <ApplyButton className={`self-center transform translate-y-1/2`} onClick={() => {}} />
+        <ColorSettings
+          className={`mb-8`}
+          selected={settings.colorScheme}
+          onSelect={(colorScheme: ColorScheme) => setSettings({...settings, colorScheme})}
+        />
+        <ApplyButton
+          className={`self-center transform translate-y-1/2`}
+          onClick={() => onApplyClick(settings)}
+        />
       </div>
     </div>
   )
@@ -336,8 +360,10 @@ function FontSetting({className='', selected, onClick}: { className?: string, se
   )
 }
 
-function ColorSettings({className = ''}: { className?: string }) {
-  const  [color, setColor] = useState<0|1|2>(0)
+function ColorSettings({ className = '', selected, onSelect }: { className?: string, selected: ColorScheme, onSelect: (_c: ColorScheme) => void }) {
+  const colorSchemeKeys = Object.keys(ColorScheme)
+    .map((key) => Number(key))
+    .filter((key) => !isNaN(key))
 
   return (
     <div className={twMerge(
@@ -348,9 +374,14 @@ function ColorSettings({className = ''}: { className?: string }) {
         color
       </span>
       <div className={`flex flex-row gap-x-4`}>
-        <ColorSetting color={`bg-primary_red`} selected={color === 0} onClick={() => setColor(0)} />
-        <ColorSetting color={`bg-primary_cyan`} selected={color === 1} onClick={() => setColor(1)} />
-        <ColorSetting color={`bg-primary_purple`} selected={color === 2} onClick={() => setColor(2)} />
+        { colorSchemeKeys.map((colorScheme) =>
+          <ColorSetting
+            key={colorScheme}
+            color={BgColor.get(colorScheme)!}
+            selected={selected === colorScheme}
+            onClick={() => onSelect(colorScheme)}
+          />
+        )}
       </div>
     </div>
   )
@@ -373,14 +404,60 @@ function ColorSetting({color, selected, onClick}: { color: string, selected: boo
   )
 }
 
+enum ColorScheme {
+  Red,
+  Cyan,
+  Purple
+}
+
+const BgColor = new Map<ColorScheme, string>([
+  [ColorScheme.Red, 'bg-primary_red'],
+  [ColorScheme.Cyan, 'bg-primary_cyan'],
+  [ColorScheme.Purple, 'bg-primary_purple'],
+])
+
+const HexColor = new Map<ColorScheme, string>([
+  [ColorScheme.Red, '#F87070'],
+  [ColorScheme.Cyan, '#70F3F8'],
+  [ColorScheme.Purple, '#D881F8'],
+])
+
+type PomodoroSettings = {
+  //pomodoro: number,
+  //shortBreak: number,
+  //longBreak: number,
+  //font: 0|1|2,
+  colorScheme: ColorScheme
+}
+
+const defaultSettings: PomodoroSettings = {
+  //pomodoro: 25,
+  //shortBreak: 5,
+  //longBreak: 15,
+  //font: 0,
+  colorScheme: ColorScheme.Red
+}
+
+const SettingsContext = createContext(defaultSettings)
+
 export default function Home() {
   const [menuActive, setMenuActive] = useState(MenuItem.Pomodoro)
   const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false)
   const durationSeconds = 18 * 60
+  const [settings, setSettings] = useState<PomodoroSettings>(defaultSettings)
+
+  function applySettings(settings: PomodoroSettings) {
+    setSettings(settings)
+    setIsSettingsDialogOpen(false)
+  }
 
   return (
-    <>
-      <SettingsDialog className={`${isSettingsDialogOpen ? 'visible' : 'invisible'}`} onCloseClick={() => setIsSettingsDialogOpen(false)} />
+    <SettingsContext.Provider value={settings}>
+      <SettingsDialog
+        className={`${isSettingsDialogOpen ? 'visible' : 'invisible'}`}
+        onCloseClick={() => setIsSettingsDialogOpen(false)}
+        onApplyClick={applySettings}
+      />
       <div className={twMerge(
         `bg-background min-h-screen min-w-fit`,
         `${isSettingsDialogOpen ? 'opacity-50' : ''}}`
@@ -395,10 +472,10 @@ export default function Home() {
             <Logo className={`mb-[45px]`}/>
             <Menu onClick={(index: number) => setMenuActive(index)} active={menuActive} className={`mb-12`}/>
             <Timer durationSeconds={durationSeconds} className={`mb-20`} />
-            <OptionsButton onClick={() => {setIsSettingsDialogOpen(true)}} />
+            <SettingsButton onClick={() => {setIsSettingsDialogOpen(true)}} />
           </div>
         </div>
       </div>
-    </>
+    </SettingsContext.Provider>
   )
 }
