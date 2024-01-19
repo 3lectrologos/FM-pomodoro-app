@@ -2,7 +2,10 @@ import { useSettings } from '@/app/SettingsContext'
 import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-export default function Timer({ durationSeconds, className='' }: { durationSeconds: number, className?: string }) {
+type durationName = 'pomodoro' | 'shortBreak' | 'longBreak'
+
+export default function Timer({ type, className='' }: { type: durationName, className?: string }) {
+  const durationSeconds = useSettings().duration[type] * 60
   const [startTime, setStartTime] = useState<number|null>(null)
   const [remainingSeconds, setRemainingSeconds] = useState(durationSeconds)
   const [currentDuration, setCurrentDuration] = useState(durationSeconds)

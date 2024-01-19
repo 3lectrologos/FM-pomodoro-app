@@ -1,4 +1,4 @@
-interface ColorScheme {
+type ColorScheme = {
   name: string,
   bgColor: string,
   hexColor: string
@@ -24,10 +24,14 @@ export const colorSchemePurple = {
 
 export const colorSchemes: ColorScheme[] = [colorSchemeRed, colorSchemeCyan, colorSchemePurple]
 
+type Duration = {
+  pomodoro: number,
+  shortBreak: number,
+  longBreak: number
+}
+
 export type Settings = {
-  //pomodoro: number,
-  //shortBreak: number,
-  //longBreak: number,
+  duration: Duration,
   //font: 0|1|2,
   colorScheme: ColorScheme
 }

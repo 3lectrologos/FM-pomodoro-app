@@ -3,7 +3,7 @@ import { colorSchemes, Settings } from '@/app/types'
 import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-export default function SettingsDialog({className = '', onCloseClick, onApplyClick}: { className?: string, onCloseClick: () => void, onApplyClick: () => void }) {
+export default function SettingsDialog({className = '', onClose}: { className?: string, onClose: () => void }) {
   const contextSettings = useSettings()
   const [settings, setSettings] = useState<Settings>(contextSettings)
   const dispatch = useSettingsDispatch()
@@ -16,13 +16,13 @@ export default function SettingsDialog({className = '', onCloseClick, onApplyCli
     console.log(settings)
     colorSchemes.map(c => c.name).indexOf(settings.colorScheme.name)
     setSettings(contextSettings)
-    onCloseClick()
+    onClose()
   }
 
   function applySettings() {
     dispatch({type: 'SET', settings: settings})
     localStorage.setItem('POMODORO_SETTINGS', JSON.stringify(settings))
-    onApplyClick()
+    onClose()
   }
 
   return (

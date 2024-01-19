@@ -10,6 +10,11 @@ type SettingsAction = SettingsActionSet
 type MaybeSettings = Settings | null
 
 const initialSettings: Settings = {
+  duration: {
+    pomodoro: 25,
+    shortBreak: 5,
+    longBreak: 15,
+  },
   colorScheme: colorSchemeRed
 }
 

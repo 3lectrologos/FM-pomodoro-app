@@ -12,6 +12,8 @@ enum MenuItem {
   LongBreak,
 }
 
+const menuItems = ['pomodoro', 'short break', 'long break']
+
 function Logo({ className='' }: { className?: string }) {
   return (
     <div className={twMerge(
@@ -28,12 +30,11 @@ function Logo({ className='' }: { className?: string }) {
 
 function Menu({ active, onClick, className='' }: { active: MenuItem, onClick: (_n: number) => void, className?: string }) {
   const bgColor = useSettings().colorScheme.bgColor
-  const menuItems = ['pomodoro', 'short break', 'long break']
 
   return (
     <nav className={`z-10`}>
       <ul className={twMerge(
-        `flex flex-row w-full h-16 bg-offblack rounded-full items-center justify-center`,
+        `flex flex-row w-full h-16 px-2 bg-offblack rounded-full items-center justify-center`,
         `${className}`,
       )}>
         { menuItems.map((item, index) =>
@@ -83,14 +84,16 @@ function SettingsButton({className = '', onClick}: { className?: string, onClick
 export default function Home() {
   const [menuActive, setMenuActive] = useState(MenuItem.Pomodoro)
   const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false)
-  const durationSeconds = 18 * 60
+
+  function onMenuClick(index: number) {
+    setMenuActive(index)
+  }
 
   return (
     <SettingsProvider>
       <SettingsDialog
         className={`${isSettingsDialogOpen ? 'visible' : 'invisible'}`}
-        onCloseClick={() => setIsSettingsDialogOpen(false)}
-        onApplyClick={() => setIsSettingsDialogOpen(false)}
+        onClose={() => setIsSettingsDialogOpen(false)}
       />
       <div className={twMerge(
         `bg-background min-h-screen min-w-fit`,
@@ -104,8 +107,10 @@ export default function Home() {
             `${isSettingsDialogOpen ? 'opacity-50' : ''}}`
           )}>
             <Logo className={`mb-[45px]`}/>
-            <Menu onClick={(index: number) => setMenuActive(index)} active={menuActive} className={`mb-12`}/>
-            <Timer durationSeconds={durationSeconds} className={`mb-20`} />
+            <Menu onClick={onMenuClick} active={menuActive} className={`mb-12`}/>
+            { menuActive === MenuItem.Pomodoro &&  <Timer type={'pomodoro'} className={`mb-20`} /> }
+            { menuActive === MenuItem.ShortBreak &&  <Timer type={'shortBreak'} className={`mb-20`} /> }
+            { menuActive === MenuItem.LongBreak &&  <Timer type={'longBreak'} className={`mb-20`} /> }
             <SettingsButton onClick={() => {setIsSettingsDialogOpen(true)}} />
           </div>
         </div>
