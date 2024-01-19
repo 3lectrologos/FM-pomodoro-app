@@ -7,6 +7,7 @@ type SettingsActionSet = {
 }
 
 type SettingsAction = SettingsActionSet
+type MaybeSettings = Settings | null
 
 const initialSettings: Settings = {
   colorScheme: colorSchemeRed
@@ -24,27 +25,39 @@ export function useSettingsDispatch() {
   return useContext(SettingsDispatchContext)
 }
 
-export function SettingsProvider({ children }: { children: React.ReactNode }) {
-  const [settings, dispatch] =
-    useReducer(settingsReducer, initialSettings)
-
-  useEffect(() => {
-    const storedSettings = window.localStorage.getItem('POMODORO_SETTINGS')
-    if (storedSettings) {
-      dispatch({type: 'SET', settings: JSON.parse(storedSettings)})
-    }
-  }, []);
-
+function Loading() {
   return (
-    <SettingsContext.Provider value={settings}>
-      <SettingsDispatchContext.Provider value={dispatch}>
-        {children}
-      </SettingsDispatchContext.Provider>
-    </SettingsContext.Provider>
+    <div className={`bg-background min-h-screen min-w-fit`}>
+    </div>
   )
 }
 
-function settingsReducer(settings: Settings, action: SettingsAction) {
+export function SettingsProvider({ children }: { children: React.ReactNode }) {
+  const [settings, dispatch] = useReducer(settingsReducer, null)
+
+  useEffect(() => {
+    const storedSettings = localStorage.getItem('POMODORO_SETTINGS')
+    if (storedSettings) {
+      dispatch({type: 'SET', settings: JSON.parse(storedSettings)})
+    } else {
+      dispatch({type: 'SET', settings: initialSettings})
+    }
+  }, []);
+
+  if (!settings) {
+    return <Loading />
+  } else {
+    return (
+      <SettingsContext.Provider value={settings}>
+        <SettingsDispatchContext.Provider value={dispatch}>
+          {children}
+        </SettingsDispatchContext.Provider>
+      </SettingsContext.Provider>
+    )
+  }
+}
+
+function settingsReducer(settings: MaybeSettings, action: SettingsAction): MaybeSettings {
   switch (action.type) {
     case 'SET':
       return action.settings
