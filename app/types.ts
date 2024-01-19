@@ -1,4 +1,5 @@
 interface ColorScheme {
+  name: string,
   bgColor: string,
   hexColor: string
 }

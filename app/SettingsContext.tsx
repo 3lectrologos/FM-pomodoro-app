@@ -1,4 +1,4 @@
-import { createContext, Dispatch, useContext, useReducer } from 'react'
+import { createContext, Dispatch, useCallback, useContext, useEffect, useReducer } from 'react'
 import { colorSchemeRed, Settings } from '@/app/types'
 
 type SettingsActionSet = {
@@ -25,7 +25,15 @@ export function useSettingsDispatch() {
 }
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
-  const [settings, dispatch] = useReducer(settingsReducer, initialSettings)
+  const [settings, dispatch] =
+    useReducer(settingsReducer, initialSettings)
+
+  useEffect(() => {
+    const storedSettings = window.localStorage.getItem('POMODORO_SETTINGS')
+    if (storedSettings) {
+      dispatch({type: 'SET', settings: JSON.parse(storedSettings)})
+    }
+  }, []);
 
   return (
     <SettingsContext.Provider value={settings}>

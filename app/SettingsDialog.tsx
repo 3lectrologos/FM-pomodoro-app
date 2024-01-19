@@ -1,6 +1,6 @@
 import { useSettings, useSettingsDispatch } from '@/app/SettingsContext'
 import { colorSchemes, Settings } from '@/app/types'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export default function SettingsDialog({className = '', onCloseClick, onApplyClick}: { className?: string, onCloseClick: () => void, onApplyClick: () => void }) {
@@ -8,13 +8,20 @@ export default function SettingsDialog({className = '', onCloseClick, onApplyCli
   const [settings, setSettings] = useState<Settings>(contextSettings)
   const dispatch = useSettingsDispatch()
 
+  useEffect(() => {
+    setSettings(contextSettings)
+  }, [contextSettings]);
+
   function closeDialog() {
+    console.log(settings)
+    colorSchemes.map(c => c.name).indexOf(settings.colorScheme.name)
     setSettings(contextSettings)
     onCloseClick()
   }
 
   function applySettings() {
     dispatch({type: 'SET', settings: settings})
+    localStorage.setItem('POMODORO_SETTINGS', JSON.stringify(settings))
     onApplyClick()
   }
 
@@ -32,7 +39,7 @@ export default function SettingsDialog({className = '', onCloseClick, onApplyCli
         <FontSettings className={`mb-6`} />
         <ColorSettings
           className={`mb-8`}
-          selected={colorSchemes.indexOf(settings.colorScheme)}
+          selected={colorSchemes.map(c => c.name).indexOf(settings.colorScheme.name)}
           onSelect={(idx: number) => setSettings({...settings, colorScheme: colorSchemes[idx]})}
         />
         <ApplyButton
