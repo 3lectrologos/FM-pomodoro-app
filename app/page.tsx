@@ -96,7 +96,7 @@ export default function Home() {
         onClose={() => setIsSettingsDialogOpen(false)}
       />
       <div className={twMerge(
-        `bg-background min-h-screen min-w-fit`,
+        `flex bg-background min-h-screen min-w-fit justify-center`,
         `${isSettingsDialogOpen ? 'opacity-50' : ''}}`
       )}>
         <div className={twMerge(
