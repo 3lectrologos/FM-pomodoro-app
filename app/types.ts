@@ -24,6 +24,9 @@ export const colorSchemePurple = {
 
 export const colorSchemes: ColorScheme[] = [colorSchemeRed, colorSchemeCyan, colorSchemePurple]
 
+export type FontScheme = 'font-sans' | 'font-serif' | 'font-mono'
+export const fontSchemes: FontScheme[] = ['font-sans', 'font-serif', 'font-mono']
+
 export type Duration = {
   pomodoro: number,
   shortBreak: number,
@@ -32,6 +35,6 @@ export type Duration = {
 
 export type Settings = {
   duration: Duration,
-  //font: 0|1|2,
   colorScheme: ColorScheme
+  fontScheme: FontScheme
 }

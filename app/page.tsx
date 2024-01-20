@@ -81,16 +81,17 @@ function SettingsButton({className = '', onClick}: { className?: string, onClick
   )
 }
 
-export default function Home() {
+function Main() {
   const [menuActive, setMenuActive] = useState(MenuItem.Pomodoro)
   const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false)
+  const settings = useSettings()
 
   function onMenuClick(index: number) {
     setMenuActive(index)
   }
 
   return (
-    <SettingsProvider>
+    <div className={`${settings.fontScheme}`}>
       <SettingsDialog
         className={`${isSettingsDialogOpen ? 'visible' : 'invisible'}`}
         onClose={() => setIsSettingsDialogOpen(false)}
@@ -115,6 +116,14 @@ export default function Home() {
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+export default function Home() {
+  return (
+    <SettingsProvider>
+      <Main />
     </SettingsProvider>
   )
 }

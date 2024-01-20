@@ -28,7 +28,12 @@ const config: Config = {
     },
     boxShadow: {
       'oval': '50px 50px 100px 0px #121530, -50px -50px 100px 0px #272C5A'
-    }
+    },
+    fontFamily: {
+      sans: ['var(--font-kumbh-sans)', 'sans-serif'],
+      mono: ['var(--font-space-mono)', 'monospace'],
+      serif: ['var(--font-roboto-slab)', 'serif']
+    },
   },
   plugins: [],
 }

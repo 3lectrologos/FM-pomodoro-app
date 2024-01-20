@@ -45,3 +45,15 @@
 .textstyle-button {
   @apply font-bold text-[16px] leading-[123%];
 }
+
+.font-sans .text-h1 {
+  @apply tracking-[-2px] -ml-[2px];
+}
+
+.font-mono .text-h1 {
+  @apply font-medium tracking-[-10px] -ml-[10px];
+}
+
+.font-mono .text-h3 {
+  @apply tracking-[13px] pl-[0px] ml-[13px];
+}

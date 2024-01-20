@@ -72,7 +72,9 @@ export default function Timer({ type, className='' }: { type: durationName, clas
       </div>
       <div className={`flex flex-col shrink-0 w-[267.7px] h-[267.7px] rounded-full bg-offblack items-center justify-center`}>
         <div className={`relative text-h1 text-lightblue`}>
-          { getTimeString(remainingSeconds) }
+          <div className={`w-[205px] pl-1.5`}>
+            { getTimeString(remainingSeconds) }
+          </div>
           { isFinished() && <StartStopButton onClick={onTimerClick} text='restart' /> }
           { isPaused() && <StartStopButton onClick={onTimerClick} text='start' /> }
           { !isFinished() && !isPaused() && <StartStopButton onClick={onTimerClick} text='pause' /> }

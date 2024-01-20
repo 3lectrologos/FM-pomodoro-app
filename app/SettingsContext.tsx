@@ -15,7 +15,8 @@ const initialSettings: Settings = {
     shortBreak: 5,
     longBreak: 15,
   },
-  colorScheme: colorSchemeRed
+  colorScheme: colorSchemeRed,
+  fontScheme: 'font-mono'
 }
 
 // NOTE: This works as long as the default values are not accessed anywhere outside the corresponding Provider.

@@ -1,5 +1,5 @@
 import { useSettings, useSettingsDispatch } from '@/app/SettingsContext'
-import { colorSchemes, Duration, Settings } from '@/app/types'
+import { colorSchemes, Duration, fontSchemes, Settings } from '@/app/types'
 import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -41,6 +41,8 @@ export default function SettingsDialog({className = '', onClose}: { className?: 
         />
         <FontSettings
           className={`mb-6`}
+          selected={fontSchemes.indexOf(settings.fontScheme)}
+          onSelect={(idx: number) => setSettings({...settings, fontScheme: fontSchemes[idx]})}
         />
         <ColorSettings
           className={`mb-8`}
@@ -156,9 +158,7 @@ function DurationField({ value, onIncrease, onDecrease }: { value: number, onInc
   )
 }
 
-function FontSettings({className = ''}: { className?: string }) {
-  const [font, setFont] = useState<0 | 1 | 2>(0)
-
+function FontSettings({className='', selected, onSelect }: { className?: string, selected: number, onSelect: (_idx: number) => void }) {
   return (
     <div className={twMerge(
       `flex flex-col px-6 items-center`,
@@ -168,9 +168,14 @@ function FontSettings({className = ''}: { className?: string }) {
         font
       </span>
       <div className={`flex flex-row gap-x-4 mb-6`}>
-        <FontSetting className={``} selected={font === 0} onClick={() => setFont(0)} />
-        <FontSetting className={``} selected={font === 1} onClick={() => setFont(1)} />
-        <FontSetting className={``} selected={font === 2} onClick={() => setFont(2)} />
+        { fontSchemes.map((fontScheme, idx) =>
+          <FontSetting
+            key={idx}
+            className={`${fontScheme}`}
+            selected={selected === idx}
+            onClick={() => onSelect(idx)}
+          />
+        )}
       </div>
       <div className={`w-full h-px bg-lightgray`}/>
     </div>
