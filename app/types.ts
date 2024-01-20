@@ -24,7 +24,7 @@ export const colorSchemePurple = {
 
 export const colorSchemes: ColorScheme[] = [colorSchemeRed, colorSchemeCyan, colorSchemePurple]
 
-type Duration = {
+export type Duration = {
   pomodoro: number,
   shortBreak: number,
   longBreak: number

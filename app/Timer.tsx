@@ -7,8 +7,10 @@ type durationName = 'pomodoro' | 'shortBreak' | 'longBreak'
 export default function Timer({ type, className='' }: { type: durationName, className?: string }) {
   const durationSeconds = useSettings().duration[type] * 60
   const [startTime, setStartTime] = useState<number|null>(null)
+  const [fullDuration, setFullDuration] = useState(durationSeconds)
   const [remainingSeconds, setRemainingSeconds] = useState(durationSeconds)
   const [currentDuration, setCurrentDuration] = useState(durationSeconds)
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout|null>(null)
 
   function isPaused() {
     return startTime === null
@@ -36,12 +38,22 @@ export default function Timer({ type, className='' }: { type: durationName, clas
   }
 
   useEffect(() => {
-    if (startTime !== null && remainingSeconds > 0) {
-      setTimeout(() => {
+    if (fullDuration !== durationSeconds) {
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId)
+        setTimeoutId(null)
+      }
+      setFullDuration(durationSeconds)
+      setCurrentDuration(durationSeconds)
+      setRemainingSeconds(durationSeconds)
+      setPaused()
+    } else if (startTime !== null && remainingSeconds > 0) {
+      const id = setTimeout(() => {
         setRemainingSeconds(Math.max(0, currentDuration - (Date.now() - startTime) / 1000))
       }, 50)
+      setTimeoutId(id)
     }
-  }, [currentDuration, remainingSeconds, startTime])
+  }, [currentDuration, fullDuration, remainingSeconds, startTime, durationSeconds])
 
   function getTimeString(seconds: number) {
     const roundedSeconds = Math.ceil(seconds)
@@ -70,7 +82,7 @@ export default function Timer({ type, className='' }: { type: durationName, clas
   )
 }
 
-function StartStopButton({ className='', onClick, text }: { className?: string, onClick: () => void, text: string }) {
+function StartStopButton({ onClick, text }: { className?: string, onClick: () => void, text: string }) {
   return (
     <button
       className={`absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-h3 text-lightblue`}
@@ -81,7 +93,7 @@ function StartStopButton({ className='', onClick, text }: { className?: string, 
   )
 }
 
-function ProgressBar({className = '', percentage, strokeWidth = 6}: {
+function ProgressBar({ percentage, strokeWidth = 6 }: {
   className?: string,
   percentage: number,
   strokeWidth?: number

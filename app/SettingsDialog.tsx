@@ -1,5 +1,5 @@
 import { useSettings, useSettingsDispatch } from '@/app/SettingsContext'
-import { colorSchemes, Settings } from '@/app/types'
+import { colorSchemes, Duration, Settings } from '@/app/types'
 import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -13,7 +13,6 @@ export default function SettingsDialog({className = '', onClose}: { className?: 
   }, [contextSettings]);
 
   function closeDialog() {
-    console.log(settings)
     colorSchemes.map(c => c.name).indexOf(settings.colorScheme.name)
     setSettings(contextSettings)
     onClose()
@@ -35,8 +34,14 @@ export default function SettingsDialog({className = '', onClose}: { className?: 
           className={`mb-6`}
           onCloseClick={closeDialog}
         />
-        <TimeSettings className={`mb-6`} />
-        <FontSettings className={`mb-6`} />
+        <TimeSettings
+          className={`mb-6`}
+          durations={settings.duration}
+          onChange={(type: string, value: number) => setSettings({...settings, duration: {...settings.duration, [type]: value}})}
+        />
+        <FontSettings
+          className={`mb-6`}
+        />
         <ColorSettings
           className={`mb-8`}
           selected={colorSchemes.map(c => c.name).indexOf(settings.colorScheme.name)}
@@ -65,7 +70,21 @@ function SettingsTitle({className='', onCloseClick}: { className?: string, onClo
   )
 }
 
-function TimeSettings({className=''}: { className?: string }) {
+function TimeSettings({className='', durations, onChange }: { className?: string, durations: Duration, onChange: (_type: string, _value: number) => void }) {
+  function onIncrease(type: 'pomodoro' | 'shortBreak' | 'longBreak') {
+    if (durations[type] < 99) {
+      onChange(type, durations[type] + 1)
+    }
+  }
+
+  function onDecrease(type: 'pomodoro' | 'shortBreak' | 'longBreak') {
+    if (durations[type] <= 1) return
+    onChange(type, durations[type] - 1)
+  }
+
+  const labels = ['pomodoro', 'short break', 'long break']
+  const names: ('pomodoro' | 'shortBreak' | 'longBreak')[] = ['pomodoro', 'shortBreak', 'longBreak']
+
   return (
     <div className={twMerge(
       `flex flex-col px-6`,
@@ -75,16 +94,21 @@ function TimeSettings({className=''}: { className?: string }) {
         time (minutes)
       </span>
       <div className={`flex flex-col gap-y-2 mb-6`}>
-        <TimeSetting label={`pomodoro`}/>
-        <TimeSetting label={`short break`}/>
-        <TimeSetting label={`long break`}/>
+        { names.map((name, idx) =>
+          <TimeSetting
+            key={idx}
+            label={labels[idx]}
+            value={durations[name]}
+            onIncrease={() => onIncrease(name)}
+            onDecrease={() => onDecrease(name)} />
+        )}
       </div>
       <div className={`w-full h-px bg-lightgray`}/>
     </div>
   )
 }
 
-function TimeSetting({className='', label}: { className?: string, label: string }) {
+function TimeSetting({className='', label, value, onIncrease, onDecrease}: { className?: string, label: string, value: number, onIncrease: () => void, onDecrease: () => void }) {
   return (
     <div className={twMerge(
       `flex flex-row items-center`,
@@ -93,18 +117,47 @@ function TimeSetting({className='', label}: { className?: string, label: string 
       <span className={`text-form-small opacity-40`}>
         {label}
       </span>
-      <input
-        className={`h-10 w-[140px] p-4 ml-auto bg-offwhite text-form-medium rounded-[10px]`}
-        type='number'
-        name={label}
-        maxLength={2}
-      />
+      <DurationField value={value} onIncrease={onIncrease} onDecrease={onDecrease} />
     </div>
   )
 }
 
-function FontSettings({className=''}: { className?: string }) {
-  const [font, setFont] = useState<0|1|2>(0)
+function DurationField({ value, onIncrease, onDecrease }: { value: number, onIncrease: () => void, onDecrease: () => void }) {
+  return (
+    <div className={`flex flex-row items-center h-10 w-[140px] px-4 py-2 ml-auto bg-offwhite text-form-medium rounded-[10px]`}>
+      <span>
+        {value}
+      </span>
+      <div className={`w-px grow`} />
+      <div className={`flex flex-col items-center`}>
+        <div
+          role="button"
+          aria-pressed="false"
+          tabIndex={0}
+          onClick={onIncrease}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="7">
+            <path fill="none" stroke="#1E213F" strokeOpacity=".25" strokeWidth="2" d="M1 6l6-4 6 4"/>
+          </svg>
+        </div>
+        <div className={`h-1.5`} />
+        <div
+          role="button"
+          aria-pressed="false"
+          tabIndex={0}
+          onClick={onDecrease}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="7">
+            <path fill="none" stroke="#1E213F" strokeOpacity=".25" strokeWidth="2" d="M1 1l6 4 6-4"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function FontSettings({className = ''}: { className?: string }) {
+  const [font, setFont] = useState<0 | 1 | 2>(0)
 
   return (
     <div className={twMerge(
