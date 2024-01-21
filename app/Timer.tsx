@@ -24,7 +24,7 @@ export default function Timer({ type, className='' }: { type: durationName, clas
     return remainingSeconds === 0
   }
 
-  function onTimerClick() {
+  function onTimerClick(event: React.MouseEvent | React.KeyboardEvent) {
     if (isFinished()) {
       setCurrentDuration(durationSeconds)
       setRemainingSeconds(durationSeconds)
@@ -67,31 +67,28 @@ export default function Timer({ type, className='' }: { type: durationName, clas
       `relative flex flex-col shrink-0 w-[300px] h-[300px] rounded-full bg-oval shadow-oval items-center justify-center`,
       `${className}`,
     )}>
-      <div className={`absolute top-1/2 transform -translate-y-1/2 w-[248px] h-[248px]`}>
+      <div
+        className={`absolute top-1/2 transform -translate-y-1/2 w-[248px] h-[248px] cursor-pointer`}
+        role='button'
+        aria-pressed='false'
+        tabIndex={0}
+        onClick={onTimerClick}
+      >
         <ProgressBar percentage={remainingSeconds / durationSeconds} strokeWidth={6.5} />
       </div>
-      <div className={`flex flex-col shrink-0 w-[267.7px] h-[267.7px] rounded-full bg-offblack items-center justify-center`}>
+      <div className={`flex flex-col shrink-0 w-[267.7px] h-[267.7px] rounded-full bg-offblack items-center justify-center pointer-events-none`}>
         <div className={`relative text-h1 text-lightblue`}>
           <div className={`w-[205px] pl-1.5`}>
-            { getTimeString(remainingSeconds) }
+            {getTimeString(remainingSeconds)}
           </div>
-          { isFinished() && <StartStopButton onClick={onTimerClick} text='restart' /> }
-          { isPaused() && <StartStopButton onClick={onTimerClick} text='start' /> }
-          { !isFinished() && !isPaused() && <StartStopButton onClick={onTimerClick} text='pause' /> }
+          <span className={`absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-h3 text-lightblue`}>
+            {isFinished() && 'restart'}
+            {isPaused() && 'start'}
+            {!isFinished() && !isPaused() && 'pause'}
+          </span>
         </div>
       </div>
     </div>
-  )
-}
-
-function StartStopButton({ onClick, text }: { className?: string, onClick: () => void, text: string }) {
-  return (
-    <button
-      className={`absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-h3 text-lightblue`}
-      onClick={onClick}
-    >
-      {text}
-    </button>
   )
 }
 
