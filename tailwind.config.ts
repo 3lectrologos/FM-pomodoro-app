@@ -11,6 +11,7 @@ const config: Config = {
       primary_red: '#F87070',
       primary_cyan: '#70F3F8',
       primary_purple: '#D881F8',
+      primary_red_hover: '#fa9595',
       lightblue: '#D7E0FF',
       background: '#1E213F',
       white: '#FFFFFF',

@@ -5,6 +5,7 @@ import { twMerge } from 'tailwind-merge'
 type durationName = 'pomodoro' | 'shortBreak' | 'longBreak'
 
 export default function Timer({ type, className='' }: { type: durationName, className?: string }) {
+  const textColor = useSettings().colorScheme.textColor
   const durationSeconds = useSettings().duration[type] * 60
   const [startTime, setStartTime] = useState<number|null>(null)
   const [fullDuration, setFullDuration] = useState(durationSeconds)
@@ -68,7 +69,7 @@ export default function Timer({ type, className='' }: { type: durationName, clas
       `${className}`,
     )}>
       <div
-        className={`absolute top-1/2 transform -translate-y-1/2 w-[248px] h-[248px] cursor-pointer`}
+        className={`absolute top-1/2 transform -translate-y-1/2 w-[248px] h-[248px] cursor-pointer peer`}
         role='button'
         aria-pressed='false'
         tabIndex={0}
@@ -76,12 +77,12 @@ export default function Timer({ type, className='' }: { type: durationName, clas
       >
         <ProgressBar percentage={remainingSeconds / durationSeconds} strokeWidth={6.5} />
       </div>
-      <div className={`flex flex-col shrink-0 w-[267.7px] h-[267.7px] rounded-full bg-offblack items-center justify-center pointer-events-none`}>
-        <div className={`relative text-h1 text-lightblue`}>
+      <div className={`flex flex-col shrink-0 w-[267.7px] h-[267.7px] rounded-full bg-offblack items-center justify-center pointer-events-none group`}>
+        <div className={`relative textstyle-h1 text-lightblue`}>
           <div className={`w-[205px] pl-1.5`}>
             {getTimeString(remainingSeconds)}
           </div>
-          <span className={`absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-h3 text-lightblue`}>
+          <span className={`absolute -bottom-7 left-1/2 transform -translate-x-1/2 textstyle-h3 text-lightblue transition-colors ${textColor}`}>
             {isFinished() && 'restart'}
             {isPaused() && 'start'}
             {!isFinished() && !isPaused() && 'pause'}

@@ -2,39 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-.text-h1 {
+.textstyle-h1 {
   @apply text-[80px] font-bold leading-[123%] tracking-[0px] ml-[0px] tablet:text-[100px] tablet:leading-[120px] tablet:tracking-[0px] tablet:ml-[0px];
 }
 
-.text-h2 {
+.textstyle-h2 {
   @apply text-[20px] font-bold leading-[123%] tablet:text-[28px] tablet:leading-[34px];
 }
 
-.text-h3 {
+.textstyle-h3 {
   @apply text-[14px] font-bold uppercase tracking-[13px] pl-[13px] leading-[123%] tablet:text-[16px] tablet:leading-[19px] tablet:tracking-[15px] tablet:ml-[15px];
 }
 
-.text-h4 {
+.textstyle-h4 {
   @apply text-[11px] font-bold uppercase tracking-[4.321px] pl-[4.321px] leading-[123%] tablet:text-[13px] tablet:leading-[16px] tablet:tracking-[5px] tablet:pl-[5px];
 }
 
-.text-body1 {
+.textstyle-body1 {
   @apply font-bold text-[12px] leading-[123%] tablet:text-[14px] tablet:leading-[18px];
 }
 
-.text-body2 {
+.textstyle-body2 {
   @apply font-bold text-[12px] leading-[123%] tablet:text-[12px] tablet:leading-[14px];
 }
 
-.text-button {
+.textstyle-button {
   @apply font-bold text-[16px] leading-[123%];
 }
 
-.text-form-small {
+.textstyle-form-small {
   @apply font-bold text-[12px] leading-[123%];
 }
 
-.text-form-medium {
+.textstyle-form-medium {
   @apply font-bold text-[14px] leading-[123%];
 }
 
@@ -46,14 +46,14 @@
   @apply font-bold text-[16px] leading-[123%];
 }
 
-.font-sans .text-h1 {
+.font-sans .textstyle-h1 {
   @apply tracking-[-2px] -ml-[2px];
 }
 
-.font-mono .text-h1 {
+.font-mono .textstyle-h1 {
   @apply font-medium tracking-[-10px] -ml-[10px];
 }
 
-.font-mono .text-h3 {
+.font-mono .textstyle-h3 {
   @apply tracking-[13px] pl-[0px] ml-[13px];
 }

@@ -62,7 +62,7 @@ function SettingsTitle({className='', onCloseClick}: { className?: string, onClo
   return (
     <div className={`${className}`}>
       <div className={`flex flex-row px-6 pt-6 mb-6 items-center`}>
-        <span className={`text-h2`}>
+        <span className={`textstyle-h2`}>
           Settings
         </span>
         <CloseButton className={`ml-auto`} onClick={onCloseClick}/>
@@ -92,7 +92,7 @@ function TimeSettings({className='', durations, onChange }: { className?: string
       `flex flex-col px-6`,
       `${className}`
     )}>
-      <span className={`text-h4 self-center mb-[18px]`}>
+      <span className={`textstyle-h4 self-center mb-[18px]`}>
         time (minutes)
       </span>
       <div className={`flex flex-col gap-y-2 mb-6`}>
@@ -116,7 +116,7 @@ function TimeSetting({className='', label, value, onIncrease, onDecrease}: { cla
       `flex flex-row items-center`,
       `${className}`
     )}>
-      <span className={`text-form-small opacity-40`}>
+      <span className={`textstyle-form-small opacity-40 select-none`}>
         {label}
       </span>
       <DurationField value={value} onIncrease={onIncrease} onDecrease={onDecrease} />
@@ -126,8 +126,8 @@ function TimeSetting({className='', label, value, onIncrease, onDecrease}: { cla
 
 function DurationField({ value, onIncrease, onDecrease }: { value: number, onIncrease: () => void, onDecrease: () => void }) {
   return (
-    <div className={`flex flex-row items-center h-10 w-[140px] px-4 py-2 ml-auto bg-offwhite text-form-medium rounded-[10px]`}>
-      <span>
+    <div className={`flex flex-row items-center h-10 w-[140px] px-4 py-2 ml-auto bg-offwhite textstyle-form-medium rounded-[10px]`}>
+      <span className={`select-none`}>
         {value}
       </span>
       <div className={`w-px grow`} />
@@ -138,19 +138,19 @@ function DurationField({ value, onIncrease, onDecrease }: { value: number, onInc
           tabIndex={0}
           onClick={onIncrease}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="7">
-            <path fill="none" stroke="#1E213F" strokeOpacity=".25" strokeWidth="2" d="M1 6l6-4 6 4"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="7" className={`stroke-background opacity-25 hover:opacity-100 stroke-2`}>
+            <path fill="none" d="M1 6l6-4 6 4"/>
           </svg>
         </div>
-        <div className={`h-1.5`} />
+        <div className={`h-1.5`}/>
         <div
           role="button"
           aria-pressed="false"
           tabIndex={0}
           onClick={onDecrease}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="7">
-            <path fill="none" stroke="#1E213F" strokeOpacity=".25" strokeWidth="2" d="M1 1l6 4 6-4"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="7" className={`stroke-background opacity-25 hover:opacity-100 stroke-2`}>
+            <path fill="none" d="M1 1l6 4 6-4"/>
           </svg>
         </div>
       </div>
@@ -164,7 +164,7 @@ function FontSettings({className='', selected, onSelect }: { className?: string,
       `flex flex-col px-6 items-center`,
       `${className}`
     )}>
-      <span className={`text-h4 mb-[18px]`}>
+      <span className={`textstyle-h4 mb-[18px]`}>
         font
       </span>
       <div className={`flex flex-row gap-x-4 mb-6`}>
@@ -188,6 +188,7 @@ function FontSetting({className='', selected, onClick}: { className?: string, se
       className={twMerge(
         `flex flex-col items-center justify-center w-10 h-10 p-4 rounded-full bg-offwhite textstyle-selection`,
         `${selected ? 'bg-offblack text-white' : ''}`,
+        `${!selected && 'hover:outline hover:outline-1 hover:outline-offwhite hover:outline-offset-4'}`,
         `${className}`
       )}
       role="button"
@@ -206,7 +207,7 @@ function ColorSettings({ className='', selected, onSelect }: { className?: strin
       `flex flex-col px-6 items-center`,
       `${className}`
     )}>
-      <span className={`text-h4 mb-[18px]`}>
+      <span className={`textstyle-h4 mb-[18px]`}>
         color
       </span>
       <div className={`flex flex-row gap-x-4`}>
@@ -225,11 +226,15 @@ function ColorSettings({ className='', selected, onSelect }: { className?: strin
 
 function ColorSetting({color, selected, onClick}: { color: string, selected: boolean, onClick: () => void }) {
   return (
-    <div className={`flex flex-col items-center justify-center w-10 h-10 p-3 rounded-full ${color}`}
-         role="button"
-         aria-pressed="false"
-         tabIndex={0}
-         onClick={onClick}
+    <div
+      className={twMerge(
+        `flex flex-col items-center justify-center w-10 h-10 p-3 rounded-full ${color}`,
+        `${!selected && 'hover:outline hover:outline-1 hover:outline-offwhite hover:outline-offset-4'}`,
+      )}
+      role="button"
+      aria-pressed="false"
+      tabIndex={0}
+      onClick={onClick}
     >
       {selected &&
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 11" fill="none">
@@ -251,10 +256,11 @@ function CloseButton({className='', onClick}: { className?: string, onClick: () 
          tabIndex={0}
          onClick={onClick}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
-        <path fill="#1E213F" fillRule="evenodd"
-              d="M11.95.636l1.414 1.414L8.414 7l4.95 4.95-1.414 1.414L7 8.414l-4.95 4.95L.636 11.95 5.586 7 .636 2.05 2.05.636 7 5.586l4.95-4.95z"
-              opacity=".5"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" className={`fill-background opacity-50 hover:opacity-100`}>
+        <path
+          fillRule="evenodd"
+          d="M11.95.636l1.414 1.414L8.414 7l4.95 4.95-1.414 1.414L7 8.414l-4.95 4.95L.636 11.95 5.586 7 .636 2.05 2.05.636 7 5.586l4.95-4.95z"
+        />
       </svg>
     </div>
   )
@@ -263,7 +269,8 @@ function CloseButton({className='', onClick}: { className?: string, onClick: () 
 function ApplyButton({className='', onClick}: { className?: string, onClick: () => void }) {
   return (
     <div className={twMerge(
-      `flex w-[140px] h-[52px] -mt-[26px] items-center justify-center text-white textstyle-button rounded-[26.5px] bg-primary_red`,
+      `flex w-[140px] h-[52px] -mt-[26px] items-center justify-center text-white textstyle-button rounded-[26.5px] bg-primary_red transition-colors`,
+      `hover:transition-colors hover:bg-primary_red_hover`,
       `${className}`
     )}
          role="button"
