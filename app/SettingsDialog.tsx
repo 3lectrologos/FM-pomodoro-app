@@ -138,7 +138,8 @@ function DurationField({ value, onIncrease, onDecrease }: { value: number, onInc
           tabIndex={0}
           onClick={onIncrease}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="7" className={`stroke-background opacity-25 desktop:hover:opacity-100 stroke-2`}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="7"
+               className={`stroke-background opacity-25 active:opacity-100 desktop:hover:opacity-100 stroke-2`}>
             <path fill="none" d="M1 6l6-4 6 4"/>
           </svg>
         </div>
@@ -149,7 +150,8 @@ function DurationField({ value, onIncrease, onDecrease }: { value: number, onInc
           tabIndex={0}
           onClick={onDecrease}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="7" className={`stroke-background opacity-25 desktop:hover:opacity-100 stroke-2`}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="7"
+               className={`stroke-background opacity-25 active:opacity-100 desktop:hover:opacity-100 stroke-2`}>
             <path fill="none" d="M1 1l6 4 6-4"/>
           </svg>
         </div>
