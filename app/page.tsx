@@ -36,14 +36,14 @@ function Menu({ active, onClick, className='' }: { active: MenuItem, onClick: (_
     <nav className={`z-10`}>
       <ul className={twMerge(
         `flex flex-row w-full h-16 px-2 bg-offblack rounded-full items-center justify-center`,
-        `tablet:gap-x-4`,
+        `gap-x-0 tablet:gap-x-4`,
         `${className}`,
       )}>
         { menuItems.map((item, index) =>
           <li key={index}
               className={twJoin(
-                `transition flex flex-col w-[105px] h-12 items-center justify-center rounded-full group px-1`,
-                `tablet:w-[120px] tablet:px-3`,
+                `transition flex flex-col w-[105px] h-12 items-center justify-center rounded-full group`,
+                `tablet:w-[120px]`,
                 `${(active === index) ? `text-background ${bgColor}` : ''}`,
               )}
               role='button'
