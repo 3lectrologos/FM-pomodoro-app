@@ -26,12 +26,12 @@ export default function SettingsDialog({className = '', onClose}: { className?: 
 
   return (
     <div className={twMerge(
-      `absolute z-20 flex flex-col w-full h-full px-6 pt-[46px] bg-darkblur text-offblack`,
-      `tablet:items-center tablet:pt-[155px]`,
+      `absolute z-20 flex flex-col w-full h-full px-6 bg-darkblur text-offblack`,
+      `tablet:items-center`,
       `${className}`
     )}>
       <div className={twMerge(
-        `flex flex-col bg-white rounded-[15px]`,
+        `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] flex flex-col bg-white rounded-[15px]`,
         `tablet:w-[540px]`
       )}>
         <SettingsTitle
