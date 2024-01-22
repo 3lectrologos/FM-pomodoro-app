@@ -18,6 +18,7 @@ function Logo({ className='' }: { className?: string }) {
   return (
     <div className={twMerge(
       `flex w-full h-6 justify-center`,
+      `tablet:h-8`,
       `${className}`,
     )}>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox='0 0 153 32'>
@@ -35,12 +36,14 @@ function Menu({ active, onClick, className='' }: { active: MenuItem, onClick: (_
     <nav className={`z-10`}>
       <ul className={twMerge(
         `flex flex-row w-full h-16 px-2 bg-offblack rounded-full items-center justify-center`,
+        `tablet:gap-x-4`,
         `${className}`,
       )}>
         { menuItems.map((item, index) =>
           <li key={index}
               className={twJoin(
-                `transition flex flex-col w-[105px] h-12 items-center justify-center rounded-full group`,
+                `transition flex flex-col w-[105px] h-12 items-center justify-center rounded-full group px-1`,
+                `tablet:w-[120px] tablet:px-3`,
                 `${(active === index) ? `text-background ${bgColor}` : ''}`,
               )}
               role='button'
@@ -51,7 +54,7 @@ function Menu({ active, onClick, className='' }: { active: MenuItem, onClick: (_
             <span className={twMerge(
               `textstyle-body1`,
               `${(active === index) ? 'opacity-100 text-background' : 'text-lightblue opacity-40'}`,
-              `desktop:group-hover:opacity-100`
+              `tablet:group-hover:opacity-100`
             )}>
               {item}
             </span>
@@ -73,7 +76,7 @@ function SettingsButton({className = '', onClick}: { className?: string, onClick
          tabIndex={0}
          onClick={onClick}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" className={`fill-lightblue opacity-50 desktop:hover:opacity-100`}>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" className={`fill-lightblue opacity-50 tablet:hover:opacity-100`}>
         <path
           d="M26.965 17.682l-2.927-2.317c.055-.448.097-.903.097-1.365 0-.462-.042-.917-.097-1.365l2.934-2.317a.702.702 0 00.167-.896l-2.775-4.851a.683.683 0 00-.847-.301l-3.454 1.407a10.506 10.506 0 00-2.345-1.379l-.52-3.71A.716.716 0 0016.503 0h-5.55a.703.703 0 00-.687.588l-.52 3.71c-.847.357-1.63.819-2.345 1.379L3.947 4.27a.691.691 0 00-.847.301L.325 9.422a.705.705 0 00.167.896l2.927 2.317c-.055.448-.097.903-.097 1.365 0 .462.042.917.097 1.365L.492 17.682a.702.702 0 00-.167.896L3.1 23.429a.683.683 0 00.847.301L7.4 22.323a10.506 10.506 0 002.345 1.379l.52 3.71c.056.329.34.588.687.588h5.55a.703.703 0 00.687-.588l.52-3.71c.847-.357 1.631-.819 2.346-1.379l3.454 1.407c.313.119.673 0 .847-.301l2.775-4.851a.705.705 0 00-.167-.896zM13.73 18.9c-2.685 0-4.857-2.191-4.857-4.9 0-2.709 2.172-4.9 4.857-4.9 2.684 0 4.856 2.191 4.856 4.9 0 2.71-2.172 4.9-4.856 4.9z"
         />
@@ -103,12 +106,13 @@ function Main() {
       )}>
         <div className={twMerge(
           `flex flex-col px-6 pt-8 pb-12 max-w-[400px]`,
+          `tablet:pt-12`
         )}>
           <div className={twMerge(
             `flex flex-col items-center justify-center`,
             `${isSettingsDialogOpen ? 'opacity-50' : ''}}`
           )}>
-            <Logo className={`mb-[45px]`}/>
+            <Logo className={`mb-[45px] tablet:mb-[55px]`}/>
             <Menu onClick={onMenuClick} active={menuActive} className={`mb-12`}/>
             { menuActive === MenuItem.Pomodoro &&  <Timer type={'pomodoro'} className={`mb-20`} /> }
             { menuActive === MenuItem.ShortBreak &&  <Timer type={'shortBreak'} className={`mb-20`} /> }

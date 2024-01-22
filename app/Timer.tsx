@@ -66,10 +66,14 @@ export default function Timer({ type, className='' }: { type: durationName, clas
   return (
     <div className={twMerge(
       `relative flex flex-col shrink-0 w-[300px] h-[300px] rounded-full bg-oval shadow-oval items-center justify-center`,
+      `tablet:w-[410px] tablet:h-[410px]`,
       `${className}`,
     )}>
       <div
-        className={`absolute top-1/2 transform -translate-y-1/2 w-[248px] h-[248px] cursor-pointer peer`}
+        className={twMerge(
+          `absolute top-1/2 transform -translate-y-1/2 w-[248px] h-[248px] cursor-pointer peer`,
+          `tablet:w-[339px] tablet:h-[339px]`,
+        )}
         role='button'
         aria-pressed='false'
         tabIndex={0}
@@ -77,12 +81,21 @@ export default function Timer({ type, className='' }: { type: durationName, clas
       >
         <ProgressBar percentage={remainingSeconds / durationSeconds} strokeWidth={6.5} />
       </div>
-      <div className={`flex flex-col shrink-0 w-[267.7px] h-[267.7px] rounded-full bg-offblack items-center justify-center pointer-events-none group`}>
+      <div className={twMerge(
+        `flex flex-col shrink-0 w-[267.7px] h-[267.7px] rounded-full bg-offblack items-center justify-center pointer-events-none group`,
+        `tablet:w-[366px] tablet:h-[366px]`
+      )}>
         <div className={`relative textstyle-h1 text-lightblue`}>
-          <div className={`w-[205px] pl-1.5`}>
+          <div className={twMerge(
+            `w-[205px] pl-1.5`,
+            `tablet:w-[280px] tablet:pl-3`
+          )}>
             {getTimeString(remainingSeconds)}
           </div>
-          <span className={`absolute -bottom-7 left-1/2 transform -translate-x-1/2 textstyle-h3 text-lightblue transition-colors ${textColor}`}>
+          <span className={twMerge(
+            `absolute -bottom-7 left-1/2 transform -translate-x-1/2 textstyle-h3 text-lightblue transition-colors ${textColor}`,
+            `tablet:-bottom-10`
+          )}>
             {isFinished() && 'restart'}
             {isPaused() && 'start'}
             {!isFinished() && !isPaused() && 'pause'}

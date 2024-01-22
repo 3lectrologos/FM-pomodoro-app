@@ -27,9 +27,13 @@ export default function SettingsDialog({className = '', onClose}: { className?: 
   return (
     <div className={twMerge(
       `absolute z-20 flex flex-col w-full h-full px-6 pt-[46px] bg-darkblur text-offblack`,
+      `tablet:items-center tablet:pt-[155px]`,
       `${className}`
     )}>
-      <div className={`flex flex-col bg-white rounded-[15px]`}>
+      <div className={twMerge(
+        `flex flex-col bg-white rounded-[15px]`,
+        `tablet:w-[540px]`
+      )}>
         <SettingsTitle
           className={`mb-6`}
           onCloseClick={closeDialog}
@@ -45,7 +49,7 @@ export default function SettingsDialog({className = '', onClose}: { className?: 
           onSelect={(idx: number) => setSettings({...settings, fontScheme: fontSchemes[idx]})}
         />
         <ColorSettings
-          className={`mb-8`}
+          className={`mb-8 tablet:mb-2`}
           selected={colorSchemes.map(c => c.name).indexOf(settings.colorScheme.name)}
           onSelect={(idx: number) => setSettings({...settings, colorScheme: colorSchemes[idx]})}
         />
@@ -61,7 +65,7 @@ export default function SettingsDialog({className = '', onClose}: { className?: 
 function SettingsTitle({className='', onCloseClick}: { className?: string, onCloseClick: () => void }) {
   return (
     <div className={`${className}`}>
-      <div className={`flex flex-row px-6 pt-6 mb-6 items-center`}>
+      <div className={`flex flex-row px-6 pt-6 mb-6 items-center tablet:pt-8 tablet:mb-8 tablet:px-10`}>
         <span className={`textstyle-h2`}>
           Settings
         </span>
@@ -89,21 +93,23 @@ function TimeSettings({className='', durations, onChange }: { className?: string
 
   return (
     <div className={twMerge(
-      `flex flex-col px-6`,
+      `flex flex-col px-6 tablet:px-10`,
       `${className}`
     )}>
-      <span className={`textstyle-h4 self-center mb-[18px]`}>
-        time (minutes)
-      </span>
-      <div className={`flex flex-col gap-y-2 mb-6`}>
-        { names.map((name, idx) =>
-          <TimeSetting
-            key={idx}
-            label={labels[idx]}
-            value={durations[name]}
-            onIncrease={() => onIncrease(name)}
-            onDecrease={() => onDecrease(name)} />
-        )}
+      <div className={`flex flex-col`}>
+        <span className={`textstyle-h4 self-center mb-[18px] tablet:self-start tablet:mb-6`}>
+          time (minutes)
+        </span>
+        <div className={`flex flex-col gap-y-2 mb-6 tablet:flex-row tablet:gap-x-[20px]`}>
+          { names.map((name, idx) =>
+            <TimeSetting
+              key={idx}
+              label={labels[idx]}
+              value={durations[name]}
+              onIncrease={() => onIncrease(name)}
+              onDecrease={() => onDecrease(name)} />
+          )}
+        </div>
       </div>
       <div className={`w-full h-px bg-lightgray`}/>
     </div>
@@ -113,7 +119,7 @@ function TimeSettings({className='', durations, onChange }: { className?: string
 function TimeSetting({className='', label, value, onIncrease, onDecrease}: { className?: string, label: string, value: number, onIncrease: () => void, onDecrease: () => void }) {
   return (
     <div className={twMerge(
-      `flex flex-row items-center`,
+      `flex flex-row items-center tablet:flex-col tablet:gap-y-2 tablet:items-start`,
       `${className}`
     )}>
       <span className={`textstyle-form-small opacity-40 select-none`}>
@@ -126,12 +132,15 @@ function TimeSetting({className='', label, value, onIncrease, onDecrease}: { cla
 
 function DurationField({ value, onIncrease, onDecrease }: { value: number, onIncrease: () => void, onDecrease: () => void }) {
   return (
-    <div className={`flex flex-row items-center h-10 w-[140px] px-4 py-2 ml-auto bg-offwhite textstyle-form-medium rounded-[10px]`}>
+    <div className={twMerge(
+      `flex flex-row items-center h-10 w-[140px] px-4 py-2 ml-auto bg-offwhite textstyle-form-medium rounded-[10px]`,
+      `tablet:h-12`
+    )}>
       <span className={`select-none`}>
         {value}
       </span>
       <div className={`w-px grow`} />
-      <div className={`flex flex-col items-center`}>
+      <div className={`flex flex-col h-full justify-center`}>
         <div
           role="button"
           aria-pressed="false"
@@ -143,7 +152,7 @@ function DurationField({ value, onIncrease, onDecrease }: { value: number, onInc
             <path fill="none" d="M1 6l6-4 6 4"/>
           </svg>
         </div>
-        <div className={`h-1.5`}/>
+        <div className={`h-1.5 tablet:h-2`}/>
         <div
           role="button"
           aria-pressed="false"
@@ -163,21 +172,23 @@ function DurationField({ value, onIncrease, onDecrease }: { value: number, onInc
 function FontSettings({className='', selected, onSelect }: { className?: string, selected: number, onSelect: (_idx: number) => void }) {
   return (
     <div className={twMerge(
-      `flex flex-col px-6 items-center`,
+      `flex flex-col px-6 items-center tablet:px-10`,
       `${className}`
     )}>
-      <span className={`textstyle-h4 mb-[18px]`}>
-        font
-      </span>
-      <div className={`flex flex-row gap-x-4 mb-6`}>
-        { fontSchemes.map((fontScheme, idx) =>
-          <FontSetting
-            key={idx}
-            className={`${fontScheme}`}
-            selected={selected === idx}
-            onClick={() => onSelect(idx)}
-          />
-        )}
+      <div className={`flex flex-col items-center mb-6 tablet:w-full tablet:flex-row tablet:justify-between`}>
+        <span className={`textstyle-h4 mb-[18px] tablet:mb-0`}>
+          font
+        </span>
+        <div className={`flex flex-row gap-x-4 tablet:items-center`}>
+          { fontSchemes.map((fontScheme, idx) =>
+            <FontSetting
+              key={idx}
+              className={`${fontScheme}`}
+              selected={selected === idx}
+              onClick={() => onSelect(idx)}
+            />
+          )}
+        </div>
       </div>
       <div className={`w-full h-px bg-lightgray`}/>
     </div>
@@ -206,27 +217,30 @@ function FontSetting({className='', selected, onClick}: { className?: string, se
 function ColorSettings({ className='', selected, onSelect }: { className?: string, selected: number, onSelect: (_idx: number) => void }) {
   return (
     <div className={twMerge(
-      `flex flex-col px-6 items-center`,
+      `flex flex-col px-6 items-center tablet:px-10`,
       `${className}`
     )}>
-      <span className={`textstyle-h4 mb-[18px]`}>
-        color
-      </span>
-      <div className={`flex flex-row gap-x-4`}>
-        { colorSchemes.map((colorScheme, idx) =>
-          <ColorSetting
-            key={idx}
-            color={colorScheme.bgColor}
-            selected={selected === idx}
-            onClick={() => onSelect(idx)}
-          />
-        )}
+      <div className={`flex flex-col items-center mb-6 tablet:w-full tablet:flex-row tablet:justify-between`}>
+        <span className={`textstyle-h4 mb-[18px] tablet:mb-0`}>
+          color
+        </span>
+        <div className={`flex flex-row gap-x-4`}>
+          {colorSchemes.map((colorScheme, idx) =>
+            <ColorSetting
+              key={idx}
+              color={colorScheme.bgColor}
+              selected={selected === idx}
+              onClick={() => onSelect(idx)}
+            />
+          )}
+        </div>
       </div>
     </div>
-  )
+)
 }
 
-function ColorSetting({color, selected, onClick}: { color: string, selected: boolean, onClick: () => void }) {
+function ColorSetting({
+  color, selected, onClick}: { color: string, selected: boolean, onClick: () => void }) {
   return (
     <div
       className={twMerge(

@@ -11,11 +11,11 @@
 }
 
 .textstyle-h3 {
-  @apply text-[14px] font-bold uppercase tracking-[13px] pl-[13px] leading-[123%] tablet:text-[16px] tablet:leading-[19px] tablet:tracking-[15px] tablet:ml-[15px];
+  @apply text-[14px] font-bold uppercase tracking-[13px] pl-[13px] leading-[123%] tablet:text-[16px] tablet:leading-[19px] tablet:tracking-[15px] tablet:pl-[15px];
 }
 
 .textstyle-h4 {
-  @apply text-[11px] font-bold uppercase tracking-[4.321px] pl-[4.321px] leading-[123%] tablet:text-[13px] tablet:leading-[16px] tablet:tracking-[5px] tablet:pl-[5px];
+  @apply text-[11px] font-bold uppercase tracking-[4.321px] leading-[123%] tablet:text-[13px] tablet:leading-[16px] tablet:tracking-[5px];
 }
 
 .textstyle-body1 {
@@ -55,5 +55,9 @@
 }
 
 .font-mono .textstyle-h3 {
-  @apply tracking-[13px] pl-[0px] ml-[13px];
+  @apply tracking-[13px] pl-[0px] ml-[13px] tablet:tracking-[17px] tablet:ml-[17px];
+}
+
+.font-mono .textstyle-body1 {
+  @apply text-[13px];
 }
