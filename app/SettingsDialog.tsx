@@ -148,7 +148,7 @@ function DurationField({ value, onIncrease, onDecrease }: { value: number, onInc
           onClick={onIncrease}
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="7"
-               className={`stroke-background opacity-25 active:opacity-100 desktop:hover:opacity-100 stroke-2`}>
+               className={`stroke-background opacity-25 active:opacity-100 hover:opacity-100 stroke-2`}>
             <path fill="none" d="M1 6l6-4 6 4"/>
           </svg>
         </div>
@@ -160,7 +160,7 @@ function DurationField({ value, onIncrease, onDecrease }: { value: number, onInc
           onClick={onDecrease}
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="7"
-               className={`stroke-background opacity-25 active:opacity-100 desktop:hover:opacity-100 stroke-2`}>
+               className={`stroke-background opacity-25 active:opacity-100 hover:opacity-100 stroke-2`}>
             <path fill="none" d="M1 1l6 4 6-4"/>
           </svg>
         </div>
@@ -201,7 +201,7 @@ function FontSetting({className='', selected, onClick}: { className?: string, se
       className={twMerge(
         `flex flex-col items-center justify-center w-10 h-10 p-4 rounded-full bg-offwhite textstyle-selection`,
         `${selected ? 'bg-offblack text-white' : ''}`,
-        `${!selected && 'desktop:hover:outline desktop:hover:outline-1 desktop:hover:outline-offwhite desktop:hover:outline-offset-4'}`,
+        `${!selected && 'hover:outline hover:outline-1 hover:outline-offwhite hover:outline-offset-4'}`,
         `${className}`
       )}
       role="button"
@@ -245,7 +245,7 @@ function ColorSetting({
     <div
       className={twMerge(
         `flex flex-col items-center justify-center w-10 h-10 p-3 rounded-full ${color}`,
-        `${!selected && 'desktop:hover:outline desktop:hover:outline-1 desktop:hover:outline-offwhite desktop:hover:outline-offset-4'}`,
+        `${!selected && 'hover:outline hover:outline-1 hover:outline-offwhite hover:outline-offset-4'}`,
       )}
       role="button"
       aria-pressed="false"
@@ -272,7 +272,7 @@ function CloseButton({className='', onClick}: { className?: string, onClick: () 
          tabIndex={0}
          onClick={onClick}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" className={`fill-background opacity-50 desktop:hover:opacity-100`}>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" className={`fill-background opacity-50 hover:opacity-100`}>
         <path
           fillRule="evenodd"
           d="M11.95.636l1.414 1.414L8.414 7l4.95 4.95-1.414 1.414L7 8.414l-4.95 4.95L.636 11.95 5.586 7 .636 2.05 2.05.636 7 5.586l4.95-4.95z"
@@ -286,7 +286,7 @@ function ApplyButton({className='', onClick}: { className?: string, onClick: () 
   return (
     <div className={twMerge(
       `flex w-[140px] h-[52px] -mt-[26px] items-center justify-center text-white textstyle-button rounded-[26.5px] bg-primary_red transition-colors`,
-      `desktop:hover:transition-colors desktop:hover:bg-primary_red_hover`,
+      `hover:transition-colors hover:bg-primary_red_hover`,
       `${className}`
     )}
          role="button"
