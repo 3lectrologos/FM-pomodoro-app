@@ -49,7 +49,7 @@ export default function SettingsDialog({className = '', onClose}: { className?: 
           onSelect={(idx: number) => setSettings({...settings, fontScheme: fontSchemes[idx]})}
         />
         <ColorSettings
-          className={`mb-8 tablet:mb-2`}
+          className={`mb-2`}
           selected={colorSchemes.map(c => c.name).indexOf(settings.colorScheme.name)}
           onSelect={(idx: number) => setSettings({...settings, colorScheme: colorSchemes[idx]})}
         />
