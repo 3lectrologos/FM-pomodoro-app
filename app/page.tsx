@@ -101,7 +101,7 @@ function Main() {
         onClose={() => setIsSettingsDialogOpen(false)}
       />
       <div className={twMerge(
-        `flex flex-col bg-background min-h-screen min-w-fit items-center`,
+        `flex flex-col bg-background min-h-dvh min-w-fit items-center`,
         `${isSettingsDialogOpen ? 'opacity-50' : ''}}`
       )}>
         <div className={twMerge(
