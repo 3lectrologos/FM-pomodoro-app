@@ -101,23 +101,30 @@ function Main() {
         onClose={() => setIsSettingsDialogOpen(false)}
       />
       <div className={twMerge(
-        `flex bg-background min-h-screen min-w-fit justify-center`,
+        `flex flex-col bg-background min-h-screen min-w-fit items-center`,
         `${isSettingsDialogOpen ? 'opacity-50' : ''}}`
       )}>
         <div className={twMerge(
-          `flex flex-col px-6 pt-8 pb-12 max-w-[400px]`,
-          `tablet:pt-12`
+          `flex flex-col flex-grow px-6 max-w-[400px]`,
+          `tablet:px-0`
         )}>
+          <div className={`flex-grow basis-8 max-h-20`} />
           <div className={twMerge(
-            `flex flex-col items-center justify-center`,
+            `flex flex-col flex-grow items-center justify-center`,
             `${isSettingsDialogOpen ? 'opacity-50' : ''}}`
           )}>
-            <Logo className={`mb-[45px] tablet:mb-[55px]`}/>
-            <Menu onClick={onMenuClick} active={menuActive} className={`mb-12`}/>
-            { menuActive === MenuItem.Pomodoro &&  <Timer type={'pomodoro'} className={`mb-20`} /> }
-            { menuActive === MenuItem.ShortBreak &&  <Timer type={'shortBreak'} className={`mb-20`} /> }
-            { menuActive === MenuItem.LongBreak &&  <Timer type={'longBreak'} className={`mb-20`} /> }
-            <SettingsButton onClick={() => {setIsSettingsDialogOpen(true)}} />
+            <Logo className={``}/>
+            <div className={`flex-grow basis-[55px] max-h-[55px]`}/>
+            <Menu onClick={onMenuClick} active={menuActive} className={``}/>
+            <div className={`flex-grow basis-[45px] max-h-28`}/>
+            {menuActive === MenuItem.Pomodoro && <Timer type={'pomodoro'} className={``}/>}
+            {menuActive === MenuItem.ShortBreak && <Timer type={'shortBreak'} className={``}/>}
+            {menuActive === MenuItem.LongBreak && <Timer type={'longBreak'} className={``}/>}
+            <div className={`flex-grow basis-20 max-h-36`}/>
+            <SettingsButton onClick={() => {
+              setIsSettingsDialogOpen(true)
+            }}/>
+            <div className={`flex-grow basis-12`}/>
           </div>
         </div>
       </div>
