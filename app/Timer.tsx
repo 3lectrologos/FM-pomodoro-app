@@ -1,10 +1,16 @@
-import { useSettings } from '@/app/SettingsContext'
-import { useEffect, useState } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { useSettings } from "@/app/SettingsContext"
+import { useEffect, useState } from "react"
+import { twMerge } from "tailwind-merge"
 
-type durationName = 'pomodoro' | 'shortBreak' | 'longBreak'
+type durationName = "pomodoro" | "shortBreak" | "longBreak"
 
-export default function Timer({type, className = ''}: { type: durationName, className?: string }) {
+export default function Timer({
+  type,
+  className = "",
+}: {
+  type: durationName
+  className?: string
+}) {
   const textColor = useSettings().colorScheme.textColor
   const durationSeconds = useSettings().duration[type] * 60
   const [startTime, setStartTime] = useState<number | null>(null)
@@ -50,55 +56,74 @@ export default function Timer({type, className = ''}: { type: durationName, clas
       setPaused()
     } else if (startTime !== null && remainingSeconds > 0) {
       const id = setTimeout(() => {
-        setRemainingSeconds(Math.max(0, currentDuration - (Date.now() - startTime) / 1000))
+        setRemainingSeconds(
+          Math.max(0, currentDuration - (Date.now() - startTime) / 1000),
+        )
       }, 50)
       setTimeoutId(id)
     }
-  }, [currentDuration, fullDuration, remainingSeconds, startTime, durationSeconds])
+  }, [
+    currentDuration,
+    fullDuration,
+    remainingSeconds,
+    startTime,
+    durationSeconds,
+  ])
 
   function getTimeString(seconds: number) {
     const roundedSeconds = Math.ceil(seconds)
-    const min = String(Math.floor(roundedSeconds / 60)).padStart(2, '0')
-    const sec = String(roundedSeconds % 60).padStart(2, '0')
+    const min = String(Math.floor(roundedSeconds / 60)).padStart(2, "0")
+    const sec = String(roundedSeconds % 60).padStart(2, "0")
     return `${min}:${sec}`
   }
 
   return (
-    <div className={twMerge(
-      `relative flex flex-col shrink-0 w-[300px] h-[300px] rounded-full bg-oval shadow-oval items-center justify-center`,
-      `tablet:w-[410px] tablet:h-[410px]`,
-      `${className}`
-    )}>
+    <div
+      className={twMerge(
+        `relative flex flex-col shrink-0 w-[300px] h-[300px] rounded-full bg-oval shadow-oval items-center justify-center`,
+        `tablet:w-[410px] tablet:h-[410px]`,
+        `${className}`,
+      )}
+    >
       <div
         className={twMerge(
           `absolute top-1/2 transform -translate-y-1/2 w-[248px] h-[248px] cursor-pointer peer`,
-          `tablet:w-[339px] tablet:h-[339px]`
+          `tablet:w-[339px] tablet:h-[339px]`,
         )}
         role="button"
         aria-pressed="false"
         tabIndex={0}
         onClick={onTimerClick}
       >
-        <ProgressBar percentage={remainingSeconds / durationSeconds} strokeWidth={6.5}/>
+        <ProgressBar
+          percentage={remainingSeconds / durationSeconds}
+          strokeWidth={6.5}
+        />
       </div>
-      <div className={twMerge(
-        `flex flex-col shrink-0 w-[267.7px] h-[267.7px] rounded-full bg-offblack items-center justify-center pointer-events-none group`,
-        `tablet:w-[366px] tablet:h-[366px]`
-      )}>
+      <div
+        className={twMerge(
+          `flex flex-col shrink-0 w-[267.7px] h-[267.7px] rounded-full bg-offblack items-center justify-center pointer-events-none group`,
+          `tablet:w-[366px] tablet:h-[366px]`,
+        )}
+      >
         <div className={`relative textstyle-h1 text-lightblue`}>
-          <div className={twMerge(
-            `w-[205px] pl-1.5`,
-            `tablet:w-[280px] tablet:pl-3`
-          )}>
+          <div
+            className={twMerge(
+              `w-[205px] pl-1.5`,
+              `tablet:w-[280px] tablet:pl-3`,
+            )}
+          >
             {getTimeString(remainingSeconds)}
           </div>
-          <span className={twMerge(
-            `absolute -bottom-7 left-1/2 transform -translate-x-1/2 textstyle-h3 text-lightblue transition-colors ${textColor}`,
-            `tablet:-bottom-10`
-          )}>
-            {isFinished() && 'restart'}
-            {isPaused() && 'start'}
-            {!isFinished() && !isPaused() && 'pause'}
+          <span
+            className={twMerge(
+              `absolute -bottom-7 left-1/2 transform -translate-x-1/2 textstyle-h3 text-lightblue transition-colors ${textColor}`,
+              `tablet:-bottom-10`,
+            )}
+          >
+            {isFinished() && "restart"}
+            {isPaused() && "start"}
+            {!isFinished() && !isPaused() && "pause"}
           </span>
         </div>
       </div>
@@ -106,9 +131,12 @@ export default function Timer({type, className = ''}: { type: durationName, clas
   )
 }
 
-function ProgressBar({percentage, strokeWidth = 6}: {
-  className?: string,
-  percentage: number,
+function ProgressBar({
+  percentage,
+  strokeWidth = 6,
+}: {
+  className?: string
+  percentage: number
   strokeWidth?: number
 }) {
   const hexColor = useSettings().colorScheme.hexColor
@@ -118,8 +146,8 @@ function ProgressBar({percentage, strokeWidth = 6}: {
   }
   const angle = percentage * 2 * Math.PI
 
-  const largeAngleFlag = (angle > Math.PI) ? 1 : 0
-  const sweepFlag = (angle > 0) ? 1 : 0
+  const largeAngleFlag = angle > Math.PI ? 1 : 0
+  const sweepFlag = angle > 0 ? 1 : 0
   const radius = 100
 
   function dot([[a, b], [c, d]]: number[][], [x, y]: number[]) {
@@ -129,7 +157,10 @@ function ProgressBar({percentage, strokeWidth = 6}: {
   function rotationMatrix(angle: number) {
     const cos = Math.cos(angle)
     const sin = Math.sin(angle)
-    return [[cos, -sin], [sin, cos]]
+    return [
+      [cos, -sin],
+      [sin, cos],
+    ]
   }
 
   function addVectors([ax, ay]: number[], [bx, by]: number[]) {
@@ -137,15 +168,22 @@ function ProgressBar({percentage, strokeWidth = 6}: {
   }
 
   const rotation = rotationMatrix(angle)
-  const [x, y] = addVectors(
-    dot(rotation, [0, -radius]), [radius, radius])
+  const [x, y] = addVectors(dot(rotation, [0, -radius]), [radius, radius])
 
   return (
-    angle !== 0 &&
-    <svg
-      viewBox={`${-0.5 * strokeWidth} ${-0.5 * strokeWidth} ${2 * radius + strokeWidth} ${2 * radius + strokeWidth}`}>
-      <path fill="none" stroke={hexColor} strokeWidth={strokeWidth} strokeLinecap="round" strokeMiterlimit="10"
-            d={`M ${radius} 0 A ${radius} ${radius} 270 ${largeAngleFlag} ${sweepFlag} ${x} ${y}`}/>
-    </svg>
+    angle !== 0 && (
+      <svg
+        viewBox={`${-0.5 * strokeWidth} ${-0.5 * strokeWidth} ${2 * radius + strokeWidth} ${2 * radius + strokeWidth}`}
+      >
+        <path
+          fill="none"
+          stroke={hexColor}
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeMiterlimit="10"
+          d={`M ${radius} 0 A ${radius} ${radius} 270 ${largeAngleFlag} ${sweepFlag} ${x} ${y}`}
+        />
+      </svg>
+    )
   )
 }

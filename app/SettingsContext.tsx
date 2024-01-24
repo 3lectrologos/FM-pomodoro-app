@@ -1,8 +1,15 @@
-import { createContext, Dispatch, useCallback, useContext, useEffect, useReducer } from 'react'
-import { colorSchemeRed, Settings } from '@/app/types'
+import {
+  createContext,
+  Dispatch,
+  useCallback,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react"
+import { colorSchemeRed, Settings } from "@/app/types"
 
 type SettingsActionSet = {
-  type: 'SET'
+  type: "SET"
   settings: Settings
 }
 
@@ -13,15 +20,17 @@ const initialSettings: Settings = {
   duration: {
     pomodoro: 25,
     shortBreak: 5,
-    longBreak: 15
+    longBreak: 15,
   },
   colorScheme: colorSchemeRed,
-  fontScheme: 'font-mono'
+  fontScheme: "font-mono",
 }
 
 // NOTE: This works as long as the default values are not accessed anywhere outside the corresponding Provider.
 export const SettingsContext = createContext({} as Settings)
-export const SettingsDispatchContext = createContext({} as Dispatch<SettingsAction>)
+export const SettingsDispatchContext = createContext(
+  {} as Dispatch<SettingsAction>,
+)
 
 export function useSettings() {
   return useContext(SettingsContext)
@@ -32,26 +41,23 @@ export function useSettingsDispatch() {
 }
 
 function Loading() {
-  return (
-    <div className={`bg-background min-h-screen min-w-fit`}>
-    </div>
-  )
+  return <div className={`bg-background min-h-screen min-w-fit`}></div>
 }
 
-export function SettingsProvider({children}: { children: React.ReactNode }) {
+export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [settings, dispatch] = useReducer(settingsReducer, null)
 
   useEffect(() => {
-    const storedSettings = localStorage.getItem('POMODORO_SETTINGS')
+    const storedSettings = localStorage.getItem("POMODORO_SETTINGS")
     if (storedSettings) {
-      dispatch({type: 'SET', settings: JSON.parse(storedSettings)})
+      dispatch({ type: "SET", settings: JSON.parse(storedSettings) })
     } else {
-      dispatch({type: 'SET', settings: initialSettings})
+      dispatch({ type: "SET", settings: initialSettings })
     }
-  }, []);
+  }, [])
 
   if (!settings) {
-    return <Loading/>
+    return <Loading />
   } else {
     return (
       <SettingsContext.Provider value={settings}>
@@ -63,9 +69,12 @@ export function SettingsProvider({children}: { children: React.ReactNode }) {
   }
 }
 
-function settingsReducer(settings: MaybeSettings, action: SettingsAction): MaybeSettings {
+function settingsReducer(
+  settings: MaybeSettings,
+  action: SettingsAction,
+): MaybeSettings {
   switch (action.type) {
-    case 'SET':
+    case "SET":
       return action.settings
     default:
       throw new Error(`Unknown action type ${action.type}`)
