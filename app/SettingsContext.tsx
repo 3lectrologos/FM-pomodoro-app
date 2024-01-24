@@ -13,7 +13,7 @@ const initialSettings: Settings = {
   duration: {
     pomodoro: 25,
     shortBreak: 5,
-    longBreak: 15,
+    longBreak: 15
   },
   colorScheme: colorSchemeRed,
   fontScheme: 'font-mono'
@@ -38,7 +38,7 @@ function Loading() {
   )
 }
 
-export function SettingsProvider({ children }: { children: React.ReactNode }) {
+export function SettingsProvider({children}: { children: React.ReactNode }) {
   const [settings, dispatch] = useReducer(settingsReducer, null)
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   if (!settings) {
-    return <Loading />
+    return <Loading/>
   } else {
     return (
       <SettingsContext.Provider value={settings}>

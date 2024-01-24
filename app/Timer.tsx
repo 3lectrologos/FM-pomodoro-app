@@ -4,14 +4,14 @@ import { twMerge } from 'tailwind-merge'
 
 type durationName = 'pomodoro' | 'shortBreak' | 'longBreak'
 
-export default function Timer({ type, className='' }: { type: durationName, className?: string }) {
+export default function Timer({type, className = ''}: { type: durationName, className?: string }) {
   const textColor = useSettings().colorScheme.textColor
   const durationSeconds = useSettings().duration[type] * 60
-  const [startTime, setStartTime] = useState<number|null>(null)
+  const [startTime, setStartTime] = useState<number | null>(null)
   const [fullDuration, setFullDuration] = useState(durationSeconds)
   const [remainingSeconds, setRemainingSeconds] = useState(durationSeconds)
   const [currentDuration, setCurrentDuration] = useState(durationSeconds)
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout|null>(null)
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
 
   function isPaused() {
     return startTime === null
@@ -67,19 +67,19 @@ export default function Timer({ type, className='' }: { type: durationName, clas
     <div className={twMerge(
       `relative flex flex-col shrink-0 w-[300px] h-[300px] rounded-full bg-oval shadow-oval items-center justify-center`,
       `tablet:w-[410px] tablet:h-[410px]`,
-      `${className}`,
+      `${className}`
     )}>
       <div
         className={twMerge(
           `absolute top-1/2 transform -translate-y-1/2 w-[248px] h-[248px] cursor-pointer peer`,
-          `tablet:w-[339px] tablet:h-[339px]`,
+          `tablet:w-[339px] tablet:h-[339px]`
         )}
-        role='button'
-        aria-pressed='false'
+        role="button"
+        aria-pressed="false"
         tabIndex={0}
         onClick={onTimerClick}
       >
-        <ProgressBar percentage={remainingSeconds / durationSeconds} strokeWidth={6.5} />
+        <ProgressBar percentage={remainingSeconds / durationSeconds} strokeWidth={6.5}/>
       </div>
       <div className={twMerge(
         `flex flex-col shrink-0 w-[267.7px] h-[267.7px] rounded-full bg-offblack items-center justify-center pointer-events-none group`,
@@ -106,7 +106,7 @@ export default function Timer({ type, className='' }: { type: durationName, clas
   )
 }
 
-function ProgressBar({ percentage, strokeWidth = 6 }: {
+function ProgressBar({percentage, strokeWidth = 6}: {
   className?: string,
   percentage: number,
   strokeWidth?: number

@@ -41,7 +41,10 @@ export default function SettingsDialog({className = '', onClose}: { className?: 
         <TimeSettings
           className={`mb-6`}
           durations={settings.duration}
-          onChange={(type: string, value: number) => setSettings({...settings, duration: {...settings.duration, [type]: value}})}
+          onChange={(type: string, value: number) => setSettings({
+            ...settings,
+            duration: {...settings.duration, [type]: value}
+          })}
         />
         <FontSettings
           className={`mb-6`}
@@ -62,7 +65,7 @@ export default function SettingsDialog({className = '', onClose}: { className?: 
   )
 }
 
-function SettingsTitle({className='', onCloseClick}: { className?: string, onCloseClick: () => void }) {
+function SettingsTitle({className = '', onCloseClick}: { className?: string, onCloseClick: () => void }) {
   return (
     <div className={`${className}`}>
       <div className={`flex flex-row px-6 pt-6 mb-6 items-center tablet:pt-8 tablet:mb-8 tablet:px-10`}>
@@ -76,13 +79,18 @@ function SettingsTitle({className='', onCloseClick}: { className?: string, onClo
   )
 }
 
-function TimeSettings({className='', durations, onChange }: { className?: string, durations: Duration, onChange: (_type: string, _value: number) => void }) {
+function TimeSettings({className = '', durations, onChange}: {
+  className?: string,
+  durations: Duration,
+  onChange: (_type: string, _value: number) => void
+}) {
   function onIncrease(type: 'pomodoro' | 'shortBreak' | 'longBreak') {
     if (durations[type] < 99) {
       onChange(type, durations[type] + 1)
     }
   }
 
+  // Refactor this into a type (already present in Timer.tsx)
   function onDecrease(type: 'pomodoro' | 'shortBreak' | 'longBreak') {
     if (durations[type] <= 1) return
     onChange(type, durations[type] - 1)
@@ -101,13 +109,13 @@ function TimeSettings({className='', durations, onChange }: { className?: string
           time (minutes)
         </span>
         <div className={`flex flex-col gap-y-2 mb-6 tablet:flex-row tablet:gap-x-[20px]`}>
-          { names.map((name, idx) =>
+          {names.map((name, idx) =>
             <TimeSetting
               key={idx}
               label={labels[idx]}
               value={durations[name]}
               onIncrease={() => onIncrease(name)}
-              onDecrease={() => onDecrease(name)} />
+              onDecrease={() => onDecrease(name)}/>
           )}
         </div>
       </div>
@@ -116,7 +124,13 @@ function TimeSettings({className='', durations, onChange }: { className?: string
   )
 }
 
-function TimeSetting({className='', label, value, onIncrease, onDecrease}: { className?: string, label: string, value: number, onIncrease: () => void, onDecrease: () => void }) {
+function TimeSetting({className = '', label, value, onIncrease, onDecrease}: {
+  className?: string,
+  label: string,
+  value: number,
+  onIncrease: () => void,
+  onDecrease: () => void
+}) {
   return (
     <div className={twMerge(
       `flex flex-row items-center tablet:flex-col tablet:gap-y-2 tablet:items-start`,
@@ -125,12 +139,16 @@ function TimeSetting({className='', label, value, onIncrease, onDecrease}: { cla
       <span className={`textstyle-form-small opacity-40 select-none`}>
         {label}
       </span>
-      <DurationField value={value} onIncrease={onIncrease} onDecrease={onDecrease} />
+      <DurationField value={value} onIncrease={onIncrease} onDecrease={onDecrease}/>
     </div>
   )
 }
 
-function DurationField({ value, onIncrease, onDecrease }: { value: number, onIncrease: () => void, onDecrease: () => void }) {
+function DurationField({value, onIncrease, onDecrease}: {
+  value: number,
+  onIncrease: () => void,
+  onDecrease: () => void
+}) {
   return (
     <div className={twMerge(
       `flex flex-row items-center h-10 w-[140px] px-4 py-2 ml-auto bg-offwhite textstyle-form-medium rounded-[10px]`,
@@ -139,7 +157,7 @@ function DurationField({ value, onIncrease, onDecrease }: { value: number, onInc
       <span className={`select-none`}>
         {value}
       </span>
-      <div className={`w-px grow`} />
+      <div className={`w-px grow`}/>
       <div className={`flex flex-col h-full justify-center`}>
         <div
           role="button"
@@ -169,7 +187,11 @@ function DurationField({ value, onIncrease, onDecrease }: { value: number, onInc
   )
 }
 
-function FontSettings({className='', selected, onSelect }: { className?: string, selected: number, onSelect: (_idx: number) => void }) {
+function FontSettings({className = '', selected, onSelect}: {
+  className?: string,
+  selected: number,
+  onSelect: (_idx: number) => void
+}) {
   return (
     <div className={twMerge(
       `flex flex-col px-6 items-center tablet:px-10`,
@@ -180,7 +202,7 @@ function FontSettings({className='', selected, onSelect }: { className?: string,
           font
         </span>
         <div className={`flex flex-row gap-x-4 tablet:items-center`}>
-          { fontSchemes.map((fontScheme, idx) =>
+          {fontSchemes.map((fontScheme, idx) =>
             <FontSetting
               key={idx}
               className={`${fontScheme}`}
@@ -195,7 +217,11 @@ function FontSettings({className='', selected, onSelect }: { className?: string,
   )
 }
 
-function FontSetting({className='', selected, onClick}: { className?: string, selected: boolean, onClick: () => void }) {
+function FontSetting({className = '', selected, onClick}: {
+  className?: string,
+  selected: boolean,
+  onClick: () => void
+}) {
   return (
     <div
       className={twMerge(
@@ -214,7 +240,11 @@ function FontSetting({className='', selected, onClick}: { className?: string, se
   )
 }
 
-function ColorSettings({ className='', selected, onSelect }: { className?: string, selected: number, onSelect: (_idx: number) => void }) {
+function ColorSettings({className = '', selected, onSelect}: {
+  className?: string,
+  selected: number,
+  onSelect: (_idx: number) => void
+}) {
   return (
     <div className={twMerge(
       `flex flex-col px-6 items-center tablet:px-10`,
@@ -236,16 +266,17 @@ function ColorSettings({ className='', selected, onSelect }: { className?: strin
         </div>
       </div>
     </div>
-)
+  )
 }
 
 function ColorSetting({
-  color, selected, onClick}: { color: string, selected: boolean, onClick: () => void }) {
+                        color, selected, onClick
+                      }: { color: string, selected: boolean, onClick: () => void }) {
   return (
     <div
       className={twMerge(
         `flex flex-col items-center justify-center w-10 h-10 p-3 rounded-full ${color}`,
-        `${!selected && 'hover:outline hover:outline-1 hover:outline-offwhite hover:outline-offset-4'}`,
+        `${!selected && 'hover:outline hover:outline-1 hover:outline-offwhite hover:outline-offset-4'}`
       )}
       role="button"
       aria-pressed="false"
@@ -261,7 +292,7 @@ function ColorSetting({
   )
 }
 
-function CloseButton({className='', onClick}: { className?: string, onClick: () => void }) {
+function CloseButton({className = '', onClick}: { className?: string, onClick: () => void }) {
   return (
     <div className={twMerge(
       `flex w-[14px] h-[14px] items-center justify-center`,
@@ -283,7 +314,7 @@ function CloseButton({className='', onClick}: { className?: string, onClick: () 
   )
 }
 
-function ApplyButton({className='', onClick}: { className?: string, onClick: () => void }) {
+function ApplyButton({className = '', onClick}: { className?: string, onClick: () => void }) {
   return (
     <div className={twMerge(
       `flex w-[140px] h-[52px] -mt-[26px] items-center justify-center text-white textstyle-button rounded-[26.5px] bg-primary_red transition-colors`,
