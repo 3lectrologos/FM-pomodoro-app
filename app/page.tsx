@@ -125,7 +125,7 @@ function Main() {
     <div className={`${settings.fontScheme}`}>
       <div
         className={twMerge(
-          `relative flex flex-col bg-background min-h-svh min-w-fit items-center`,
+          `relative flex flex-col bg-background min-h-dvh min-w-fit items-center`,
           `${isSettingsDialogOpen ? "opacity-50" : ""}}`,
         )}
       >
