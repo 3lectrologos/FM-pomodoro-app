@@ -4,7 +4,7 @@ import "./globals.css"
 import { SettingsProvider } from "@/app/SettingsContext"
 
 const spaceMono = Space_Mono({
-  weight: "400",
+  weight: ["400", "700"],
   subsets: ["latin"],
   variable: "--font-space-mono",
 })
