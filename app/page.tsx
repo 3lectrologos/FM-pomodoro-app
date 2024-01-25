@@ -160,7 +160,7 @@ function Main() {
             {menuActive === MenuItem.LongBreak && (
               <Timer type={"longBreak"} className={``} />
             )}
-            <div className={`flex-grow basis-20 max-h-36`} />
+            <div className={`flex-grow basis-16 max-h-36`} />
             <SettingsButton
               onClick={() => {
                 setIsSettingsDialogOpen(true)
