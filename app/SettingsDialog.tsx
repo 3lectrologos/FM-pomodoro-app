@@ -210,6 +210,7 @@ function DurationField({
           className={`flex flex-col w-full h-1/2 items-end justify-end pb-1 pr-4 group`}
           role="button"
           aria-pressed="false"
+          aria-label="Increase duration"
           tabIndex={0}
           onClick={onIncrease}
         >
@@ -228,6 +229,7 @@ function DurationField({
           className={`flex flex-col w-full h-1/2 items-end justify-start pt-1 pr-4 group`}
           role="button"
           aria-pressed="false"
+          aria-label="Decrease duration"
           tabIndex={0}
           onClick={onDecrease}
         >

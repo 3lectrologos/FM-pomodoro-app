@@ -92,6 +92,7 @@ export default function Timer({
         )}
         role="button"
         aria-pressed="false"
+        aria-label="Start / Pause timer"
         tabIndex={0}
         onClick={onTimerClick}
       >

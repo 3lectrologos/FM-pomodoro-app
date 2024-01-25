@@ -63,6 +63,7 @@ function Menu({
             )}
             role="button"
             aria-pressed="false"
+            aria-label={item}
             tabIndex={0}
             onClick={() => onClick(index)}
           >

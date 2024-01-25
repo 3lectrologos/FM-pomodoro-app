@@ -33,7 +33,11 @@ export default function RootLayout({
       lang="en"
       className={`${kumbhSans.variable} ${spaceMono.variable} ${robotoSlab.variable}`}
     >
-      <body>{children}</body>
+      <body>
+      <main>
+        {children}
+      </main>
+      </body>
     </html>
   )
 }
