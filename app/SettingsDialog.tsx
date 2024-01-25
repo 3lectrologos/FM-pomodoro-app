@@ -199,43 +199,48 @@ function DurationField({
   return (
     <div
       className={twMerge(
-        `flex flex-row items-center h-10 w-[140px] px-4 py-2 ml-auto bg-offwhite textstyle-form-medium rounded-[10px]`,
+        `flex flex-row items-center h-10 w-[140px] ml-auto bg-offwhite textstyle-form-medium rounded-[10px]`,
         `tablet:h-12`,
       )}
     >
-      <span className={`select-none`}>{value}</span>
+      <span className={`select-none pl-4 py-2`}>{value}</span>
       <div className={`w-px grow`} />
-      <div className={`flex flex-col h-full justify-center`}>
+      <div className={`flex flex-col w-8 items-center h-full`}>
         <div
+          className={`flex flex-col h-1/2 justify-end pb-1 group`}
           role="button"
           aria-pressed="false"
           tabIndex={0}
           onClick={onIncrease}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="7"
-            className={`stroke-background opacity-25 active:opacity-100 hover:opacity-100 stroke-2`}
-          >
-            <path fill="none" d="M1 6l6-4 6 4" />
-          </svg>
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="7"
+              className={`stroke-background opacity-25 group-active:opacity-100 group-hover:opacity-100 stroke-2`}
+            >
+              <path fill="none" d="M1 6l6-4 6 4" />
+            </svg>
+          </div>
         </div>
-        <div className={`h-1.5 tablet:h-2`} />
         <div
+          className={`flex flex-col h-1/2 justify-start pt-1 group`}
           role="button"
           aria-pressed="false"
           tabIndex={0}
           onClick={onDecrease}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="7"
-            className={`stroke-background opacity-25 active:opacity-100 hover:opacity-100 stroke-2`}
-          >
-            <path fill="none" d="M1 1l6 4 6-4" />
-          </svg>
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="7"
+              className={`stroke-background opacity-25 group-active:opacity-100 group-hover:opacity-100 stroke-2`}
+            >
+              <path fill="none" d="M1 1l6 4 6-4" />
+            </svg>
+          </div>
         </div>
       </div>
     </div>
