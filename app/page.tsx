@@ -93,7 +93,7 @@ function SettingsButton({
     <div
       className={twMerge(
         `flex flex-col w-[28px] h-[28px] items-center justify-center cursor-pointer`,
-        `opacity-50 hover:opacity-100`,
+        `opacity-50 hover:opacity-100 active:opacity-100`,
         `${className}`,
       )}
       role="button"
