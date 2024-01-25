@@ -57,12 +57,11 @@ function Menu({
           <li
             key={index}
             className={twJoin(
-              `transition flex flex-col w-[105px] h-12 items-center justify-center rounded-full group`,
+              `transition flex flex-col w-[105px] h-12 items-center justify-center rounded-full cursor-pointer group`,
               `tablet:w-[120px]`,
               `${active === index ? `text-background ${bgColor}` : ""}`,
             )}
-            role="button"
-            aria-pressed="false"
+            role="menuitem"
             aria-label={item}
             tabIndex={0}
             onClick={() => onClick(index)}
