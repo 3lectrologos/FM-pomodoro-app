@@ -205,9 +205,9 @@ function DurationField({
     >
       <span className={`select-none pl-4 py-2`}>{value}</span>
       <div className={`w-px grow`} />
-      <div className={`flex flex-col w-8 items-center h-full`}>
+      <div className={`flex flex-col w-10 items-center h-full`}>
         <div
-          className={`flex flex-col h-1/2 justify-end pb-1 group`}
+          className={`flex flex-col w-full h-1/2 items-end justify-end pb-1 pr-4 group`}
           role="button"
           aria-pressed="false"
           tabIndex={0}
@@ -225,7 +225,7 @@ function DurationField({
           </div>
         </div>
         <div
-          className={`flex flex-col h-1/2 justify-start pt-1 group`}
+          className={`flex flex-col w-full h-1/2 items-end justify-start pt-1 pr-4 group`}
           role="button"
           aria-pressed="false"
           tabIndex={0}
@@ -399,7 +399,7 @@ function CloseButton({
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 14 14"
-        className={`opacity-50 hover:opacity-100`}
+        className={`opacity-50 hover:opacity-100 active:opacity-100`}
       >
         <path
           fill="1E213F"
@@ -422,7 +422,7 @@ function ApplyButton({
     <div
       className={twMerge(
         `flex w-[140px] h-[52px] -mt-[26px] items-center justify-center text-white textstyle-button rounded-[26.5px] bg-primary_red transition-colors`,
-        `hover:transition-colors hover:bg-primary_red_hover`,
+        `hover:transition-colors hover:bg-primary_red_hover active:bg-primary_red_hover`,
         `${className}`,
       )}
       role="button"
