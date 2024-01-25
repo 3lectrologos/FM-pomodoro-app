@@ -33,7 +33,7 @@ export default function SettingsDialog({
   return (
     <div
       className={twMerge(
-        `absolute z-20 flex flex-col w-full min-h-svh px-6 bg-darkblur text-offblack`,
+        `absolute z-20 flex flex-col w-full h-full px-6 bg-darkblur text-offblack`,
         `tablet:items-center`,
         `${className}`,
       )}
@@ -383,7 +383,7 @@ function CloseButton({
   return (
     <div
       className={twMerge(
-        `flex w-[14px] h-[14px] items-center justify-center`,
+        `flex flex-col w-[14px] h-[14px] items-center justify-center`,
         `${className}`,
       )}
       role="button"

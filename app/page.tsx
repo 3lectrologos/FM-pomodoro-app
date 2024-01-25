@@ -98,6 +98,7 @@ function SettingsButton({
       )}
       role="button"
       aria-pressed="false"
+      aria-label="Settings"
       tabIndex={0}
       onClick={onClick}
     >
@@ -122,16 +123,16 @@ function Main() {
 
   return (
     <div className={`${settings.fontScheme}`}>
-      <SettingsDialog
-        className={`${isSettingsDialogOpen ? "visible" : "invisible"}`}
-        onClose={() => setIsSettingsDialogOpen(false)}
-      />
       <div
         className={twMerge(
-          `flex flex-col bg-background min-h-svh min-w-fit items-center`,
+          `relative flex flex-col bg-background min-h-svh min-w-fit items-center`,
           `${isSettingsDialogOpen ? "opacity-50" : ""}}`,
         )}
       >
+        <SettingsDialog
+          className={`${isSettingsDialogOpen ? "visible" : "invisible"}`}
+          onClose={() => setIsSettingsDialogOpen(false)}
+        />
         <div
           className={twMerge(
             `flex flex-col flex-grow px-6 max-w-[400px]`,
