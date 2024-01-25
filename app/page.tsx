@@ -52,6 +52,7 @@ function Menu({
           `gap-x-0 tablet:gap-x-4`,
           `${className}`,
         )}
+        role="menubar"
       >
         {menuItems.map((item, index) => (
           <li
